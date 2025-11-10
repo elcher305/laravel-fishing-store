@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,10 +9,14 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'is_active'
     ];
 
     protected $hidden = [
@@ -21,31 +24,42 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'is_active' => 'boolean',
+    ];
+
+    // Scopes
+    public function scopeAdmins($query)
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $query->where('role', 'admin');
     }
 
-    public function cart()
+    public function scopeActive($query)
     {
-        return $this->hasOne(Cart::class);
+        return $query->where('is_active', true);
     }
 
-    public function reviews()
+    // Methods
+    public function isAdmin()
     {
-        return $this->hasMany(ProductReview::class);
+        return $this->role === 'admin';
     }
 
-    public function addresses()
+    public function isUser()
     {
-        return $this->hasMany(UserAddress::class);
+        return $this->role === 'user';
     }
 
-    public function orders()
+    public function canManageProducts()
     {
-        return $this->hasMany(Order::class);
+        return $this->isAdmin();
+    }
+
+    // Relations
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'created_by');
     }
 }

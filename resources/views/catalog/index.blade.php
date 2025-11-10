@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Каталог рыболовных снастей - Рыболовный Мир</title>
+    <title>Каталог рыболовных снастей - CatFish</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
@@ -13,7 +13,7 @@
     <div class="container mx-auto px-4 py-4">
         <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <a href="/" class="text-2xl font-bold flex items-center">
-                🎣 Рыболовный Мир
+                CatFish
             </a>
 
             <!-- Поиск -->
@@ -301,7 +301,7 @@
 <footer class="bg-gray-800 text-white mt-12">
     <div class="container mx-auto px-4 py-8">
         <div class="text-center">
-            <p class="text-lg">🎣 Рыболовный Мир</p>
+            <p class="text-lg"> CatFish </p>
             <p class="text-gray-400 mt-2">Все права защищены &copy; 2024</p>
         </div>
     </div>
