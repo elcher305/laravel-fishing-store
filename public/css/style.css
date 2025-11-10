@@ -1,0 +1,684 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+/* Стили */
+body {
+    font-family: "Onest", sans-serif;
+    background-color: #FFFFFF;
+    height: 37px;
+}
+
+.header_menu {
+    height: 30px;
+    background-color: #F0F0F0;
+    padding-left: 145px;
+    padding-top: 10px;
+}
+
+.icons-menu {
+    margin-top: 13px;
+    margin-left: 8rem;
+}
+
+.icons-menu img {
+    padding-left: 2rem;
+}
+
+.user_menu {
+    margin-left: 1370px;
+    margin-top: -17px;
+}
+
+.header_menu img {
+    position: absolute;
+    margin-left: 49rem;
+}
+
+.header_menu a {
+    color: #374957;
+    font-size: 14px;
+    width: 400px;
+    padding-right: 20px;
+}
+
+.header_menu a:hover {
+    color: #000000;
+    cursor: pointer;
+}
+
+.main-menu {
+    margin-top: 20px;
+}
+
+#logo {
+    margin-left: 378px;
+}
+
+.basic-menu {
+    color: #374957;
+    font-size: 16px;
+    margin-top: 25px;
+    margin-left: 145px;
+}
+
+.basic-menu a:hover {
+    color: #3F8FD2;
+    cursor: pointer;
+}
+
+.basic-menu a {
+    padding-right: 54px;
+}
+
+/* Блок создания поля поиска */
+
+.search-field {
+    display: flex;
+    margin-top: -70px;
+    margin-bottom: 46px;
+    border: none;
+    cursor: pointer;
+}
+.search-field > input {
+    height: 45px;
+    width: 500px;
+    border-radius: 4px;
+    border: 1px solid #BEBEBE;
+    padding-left: 11px;
+    margin-left: 40px;
+}
+
+.search-field > button {
+    border: none;
+    position: absolute;
+    margin-left: 1300px;
+    margin-top: 16px;
+    background-color: #FFFFFF;
+}
+
+/* Создание кнопки каталога */
+
+.button-catalog {
+    background-color: #043C6B;
+    color: white;
+    border: none;
+    font-size: 18px;
+    padding: 13px 30px;
+    margin-left: 653px;
+    border-radius: 4px;
+}
+
+/* Блок лучших товаров */
+.best-products {
+    margin: 70px 145px;
+    padding: 60px 0;
+}
+
+.best-products-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #11426C;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.product-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background:  #3498db;
+}
+
+.product-badge {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.product-size {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.product-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+}
+
+.product-sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.size-option {
+    padding: 0.4rem 0.8rem;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #495057;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.size-option:hover {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.product-stock {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+.in-stock {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 1.5rem;
+}
+
+.low-stock {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+    margin-bottom: 1.5rem;
+}
+
+.out-of-stock {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    margin-bottom: 1.5rem;
+}
+
+.product-price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #11426C;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    background:  #0B5FA5;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+    background:  #3579bb;
+}
+
+.add-to-cart-btn:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Подвал Сайта */
+.container_footer {
+    background-color: #F9F9F9;
+}
+
+.footer-columns {
+    background: #F9F9F9;
+    color: white;
+    padding: 4rem 0 2rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding-left: 145px;
+    padding-right: 145px;
+}
+
+.footer-col h3,
+.footer-col h4 {
+    margin-bottom: 1.5rem;
+    color: #043C6B;
+    font-size: 1.3rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.logo-icon {
+    font-size: 3rem;
+    color: #3498db;
+}
+
+.brand-tagline {
+    color: #bdc3c7;
+    font-style: italic;
+}
+
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.2rem;
+}
+
+.contact-line {
+    color: #374957;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.footer-links li {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: #374957;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #3498db;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-btn {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    background: rgb(37, 58, 104);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.social-btn:hover {
+    background: #3498db;
+    transform: translateY(-2px);
+}
+
+.footer-copyright {
+    display: flex;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 2rem;
+    text-align: center;
+    color: #95a5a6;
+    padding-left: 145px;
+    font-size: 12px;
+    margin-right: 40rem;
+}
+
+/* Блок фильтрации товаров */
+.products-filter {
+    padding: 2rem 0;
+    margin-right: 145px;
+    margin-left: 145px;
+}
+
+/* Хлебные крошки */
+.breadcrumbs {
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.breadcrumb-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.breadcrumb-link:hover {
+    color: #2980b9;
+}
+
+.breadcrumb-separator {
+    margin: 0 0.5rem;
+    color: #7f8c8d;
+}
+
+.breadcrumb-current {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* Контейнер фильтров */
+.filter-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Боковая панель фильтров */
+.filter-sidebar {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 2rem;
+}
+
+.filter-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #3498db;
+}
+
+.filter-group {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.filter-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.filter-group-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.filter-group-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #ecf0f1;
+    margin-left: 1rem;
+}
+
+/* Радио кнопки для цены */
+.price-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.radio-option:hover {
+    background: #f8f9fa;
+}
+
+.radio-option input {
+    display: none;
+}
+
+.radio-custom {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #bdc3c7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.radio-custom::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3498db;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.radio-option input:checked + .radio-custom {
+    border-color: #3498db;
+}
+
+.radio-option input:checked + .radio-custom::after {
+    opacity: 1;
+}
+
+.radio-label {
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+/* Чекбоксы для остальных фильтров */
+.checkbox-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.checkbox-option:hover {
+    background: #f8f9fa;
+}
+
+.checkbox-option input {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 12px;
+    color: transparent;
+}
+
+.checkbox-option input:checked + .checkbox-custom {
+    background: #3498db;
+    border-color: #3498db;
+    color: white;
+}
+
+.checkbox-label {
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+/* Кнопки фильтрации */
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: lowercase;
+    font-size: 1rem;
+}
+
+.apply-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+}
+
+.apply-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #2573a7);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.reset-btn {
+    background: #ecf0f1;
+    color: #7f8c8d;
+    border: 2px solid #bdc3c7;
+}
+
+.reset-btn:hover {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+    transform: translateY(-2px);
+}
+
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .filter-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .filter-sidebar {
+        position: static;
+    }
+
+    .filter-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-filter {
+        padding: 1rem 0;
+    }
+
+    .filter-sidebar {
+        padding: 1.5rem;
+    }
+
+    .products-main {
+        padding: 1.5rem;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .breadcrumbs {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-container {
+        gap: 1.5rem;
+    }
+
+    .filter-sidebar {
+        padding: 1rem;
+    }
+
+    .products-main {
+        padding: 1rem;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-group-title {
+        font-size: 1rem;
+    }
+
+    .filter-btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+}
