@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $fillable = [
         'name', 'slug', 'description', 'price', 'old_price',
-        'category_id', 'brand_id', 'image', 'in_stock',
+        'category_id', 'brand_id', 'image', 'images', 'in_stock',
         'rating', 'review_count', 'features'
     ];
 
@@ -20,7 +20,8 @@ class Product extends Model
         'old_price' => 'decimal:2',
         'rating' => 'decimal:2',
         'in_stock' => 'boolean',
-        'features' => 'array'
+        'features' => 'array',
+        'images' => 'array'
     ];
 
     public function category()
@@ -38,7 +39,12 @@ class Product extends Model
         return $this->hasMany(ProductReview::class);
     }
 
-    // Scopes для фильтрации
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    // Scopes для поиска
     public function scopeSearch($query, $search)
     {
         return $query->where('name', 'like', "%{$search}%")
@@ -71,5 +77,42 @@ class Product extends Model
     public function scopeRating($query, $minRating)
     {
         return $query->where('rating', '>=', $minRating);
+    }
+
+    // Атрибуты
+    public function getMainFeaturesAttribute()
+    {
+        return $this->features ? array_slice($this->features, 0, 6) : [];
+    }
+
+    public function getHasDiscountAttribute()
+    {
+        return $this->old_price && $this->old_price > $this->price;
+    }
+
+    public function getDiscountPercentAttribute()
+    {
+        if (!$this->has_discount) return 0;
+
+        return round((($this->old_price - $this->price) / $this->old_price) * 100);
+    }
+
+    public function getAllImagesAttribute()
+    {
+        $images = [];
+
+        if ($this->image) {
+            $images[] = $this->image;
+        }
+
+        if ($this->images && is_array($this->images)) {
+            $images = array_merge($images, $this->images);
+        }
+
+        if (empty($images)) {
+            $images[] = '/images/placeholder-product.jpg';
+        }
+
+        return $images;
     }
 }

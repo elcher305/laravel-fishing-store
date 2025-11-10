@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,3 +32,14 @@ Route::middleware('auth')->group(function () {
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/catalog/category/{slug}', [CatalogController::class, 'category'])->name('catalog.category');
 Route::get('/catalog/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
+
+
+// Корзина
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::put('/update/{productId}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/clear', [CartController::class, 'clear'])->name('cart.clear');
+    Route::get('/info', [CartController::class, 'getCartInfo'])->name('cart.info');
+});
