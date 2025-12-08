@@ -1,0 +1,202 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Onest', sans-serif;
+}
+
+body {
+    font-family: 'Onest', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.container {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px 25px;
+    font-size: 24px;
+    font-weight: 600;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.cart-item:hover {
+    background-color: #f9f9f9;
+}
+
+.item-info {
+    flex-grow: 1;
+}
+
+.item-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.item-subtitle {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 8px;
+}
+
+.item-price {
+    font-size: 26px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.delete-btn {
+    background-color: #f8f9fa;
+    color: #e74c3c;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.delete-btn:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.divider {
+    height: 1px;
+    background-color: #eaeaea;
+    margin: 0 25px;
+}
+
+.summary {
+    padding: 25px;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.total-label {
+    font-size: 18px;
+    color: #7f8c8d;
+}
+
+.total-price {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.conditions {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    border-left: 4px solid #3498db;
+}
+
+.footer-note {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-top: 20px;
+    padding: 0 15px;
+}
+
+@media (max-width: 600px) {
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .delete-btn {
+        align-self: flex-end;
+    }
+
+    body {
+        padding: 10px;
+    }
+}
+
+/* Стили для счетчика товаров */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-top: -65px;
+    margin-right: 40px;
+}
+
+.quantity-btn {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+}
+
+.quantity-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.quantity-input {
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+    font-size: 16px;
+}
+
+.item-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#btn-summary-pay {
+    background-color: #3F8FD2;
+    padding: 11px 28px;
+    font-size: 18px;
+    color: white;
+    margin-left: 34rem;
+    margin-bottom: 2rem;
+}

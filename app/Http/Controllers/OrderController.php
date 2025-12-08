@@ -112,6 +112,14 @@ class OrderController extends Controller
             ->with('success', 'Заказ успешно удален!');
     }
 
+    // История заказов пользователя
+    public function userOrders()
+    {
+        $user = Auth::user();
+        $orders = $user->orders()->latest()->paginate(10);
+
+        return view('orders.user-index', compact('orders'));
+    }
     // 7) Создание тестового заказа
     public function createDemo()
     {

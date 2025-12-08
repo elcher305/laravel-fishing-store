@@ -1,4 +1,5 @@
 <?php
+// app/Models/Product.php
 
 namespace App\Models;
 
@@ -25,7 +26,7 @@ class Product extends Model
         'price' => 'decimal:2',
         'quantity' => 'integer',
         'is_active' => 'boolean',
-        'characteristics' => 'array' // Автоматическое преобразование JSON
+        'characteristics' => 'array'
     ];
 
     // Аксессор для полного URL изображения
@@ -55,33 +56,28 @@ class Product extends Model
         return $query->where('is_active', true);
     }
 
-    // Scope для поиска по категории
-    public function scopeCategory($query, $category)
+    // Добавляем отношения (из шага 7)
+    public function cartItems()
     {
-        return $query->where('category', $category);
+        return $this->hasMany(CartItem::class);
     }
 
-    // Scope для поиска по названию
-    public function scopeSearch($query, $search)
+    public function orderItems()
     {
-        return $query->where('name', 'like', "%{$search}%")
-            ->orWhere('description', 'like', "%{$search}%");
+        return $this->hasMany(OrderItem::class);
     }
 
-    // Отношение к пользователям, которые добавили товар в избранное
-    public function wishlistedBy()
+    public function wishlists()
     {
-        return $this->belongsToMany(User::class, 'wishlists')
-            ->withTimestamps();
+        return $this->hasMany(Wishlist::class);
     }
 
-    // Проверка, добавлен ли товар в избранное текущим пользователем
     public function isInWishlist()
     {
         if (!auth()->check()) {
             return false;
         }
 
-        return $this->wishlistedBy()->where('user_id', auth()->id())->exists();
+        return $this->wishlists()->where('user_id', auth()->id())->exists();
     }
 }

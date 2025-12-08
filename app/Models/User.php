@@ -10,7 +10,17 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'name',
+        'email',
+        'password',
+        'phone',
+        'address',
+        'birth_date',
+        'avatar',
+        'gender',
+        'fishing_experience',
+        'about',
+        'favorite_fishing_type'
     ];
 
     protected $hidden = [
@@ -19,6 +29,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birth_date' => 'date'
     ];
 
     public function isAdmin()
@@ -31,22 +42,58 @@ class User extends Authenticatable
         return $this->role === 'user';
     }
 
-    // Отношение к избранным товарам
+    public function getFormattedBirthDateAttribute()
+    {
+        return $this->birth_date ? $this->birth_date->format('d.m.Y') : 'Не указана';
+    }
+
+    public function getGenderLabelAttribute()
+    {
+        $genders = [
+            'male' => 'Мужской',
+            'female' => 'Женский',
+            'other' => 'Другой'
+        ];
+
+        return $genders[$this->gender] ?? 'Не указан';
+    }
+
+    public function getExperienceLabelAttribute()
+    {
+        $experiences = [
+            'beginner' => 'Начинающий',
+            'amateur' => 'Любитель',
+            'professional' => 'Профессионал'
+        ];
+
+        return $experiences[$this->fishing_experience] ?? 'Не указан';
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar) {
+            return asset('storage/' . $this->avatar);
+        }
+
+        // Генерация аватарки по умолчанию на основе имени
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+    }
+
+// Отношение к заказам
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class);
     }
 
-    // Товары в избранном через промежуточную таблицу
-    public function favoriteProducts()
-    {
-        return $this->belongsToMany(Product::class, 'wishlists')
-            ->withTimestamps();
-    }
-
-    // Проверка, есть ли товар в избранном
-    public function hasInWishlist($productId)
-    {
-        return $this->wishlists()->where('product_id', $productId)->exists();
-    }
 }
