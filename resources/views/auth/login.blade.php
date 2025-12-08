@@ -1,31 +1,46 @@
+{{-- resources/views/auth/login.blade.php --}}
 @extends('layouts.app')
 
+@section('title', 'Вход')
+
 @section('content')
-    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-bold mb-6">Вход в систему</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Вход в систему</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                   id="email" name="email" value="{{ old('email') }}" required>
+                            @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-700 mb-2" for="email">Email</label>
-                <input type="email" name="email" id="email" value="{{ old('email') }}"
-                       class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Пароль</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                   id="password" name="password" required>
+                            @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Войти</button>
+
+                        <div class="text-center mt-3">
+                            Нет аккаунта? <a href="{{ route('register') }}">Зарегистрироваться</a><br>
+                            <a href="{{ route('password.request') }}">Забыли пароль?</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <div class="mb-6">
-                <label class="block text-gray-700 mb-2" for="password">Пароль</label>
-                <input type="password" name="password" id="password"
-                       class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
-            </div>
-
-            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
-                Войти
-            </button>
-
-            <p class="mt-4 text-center">
-                Нет аккаунта? <a href="{{ route('register') }}" class="text-blue-500 hover:underline">Зарегистрироваться</a>
-            </p>
-        </form>
+        </div>
     </div>
 @endsection

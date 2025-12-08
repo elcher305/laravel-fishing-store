@@ -1,48 +1,48 @@
-<!DOCTYPE html>
+{{-- resources/views/layouts/app.blade.php --}}
+    <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Fishing Store - @yield('title')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-<nav class="bg-blue-600 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="{{ route('dashboard') }}" class="text-xl font-bold">Личный кабинет</a>
-        <div>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">🎣 Fishing Store</a>
+        <div class="navbar-nav ms-auto">
             @auth
-                <span class="mr-4">Привет, {{ Auth::user()->name }}!</span>
-                <form action="{{ route('logout') }}" method="POST" class="inline">
+                <span class="nav-item nav-link">Привет, {{ Auth::user()->name }}!</span>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
                     @csrf
-                    <button type="submit" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded">Выйти</button>
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Выйти</button>
                 </form>
             @else
-                <a href="{{ route('login') }}" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded">Войти</a>
-                <a href="{{ route('register') }}" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded ml-2">Регистрация</a>
+                <a class="nav-link" href="{{ route('login') }}">Вход</a>
+                <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
             @endauth
         </div>
     </div>
 </nav>
 
-<main class="container mx-auto mt-8 p-4">
+<div class="container mt-4">
     @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
-    @if($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
         </div>
     @endif
 
     @yield('content')
-</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
