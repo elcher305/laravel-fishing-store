@@ -101,4 +101,10 @@ class User extends Authenticatable
         $hash = md5(strtolower(trim($this->email)));
         return "https://www.gravatar.com/avatar/{$hash}?d=mp";
     }
+
+    // Убедитесь, что это отношение существует
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

@@ -1,184 +1,67 @@
-{{-- resources/views/profile/show.blade.php --}}
-@extends('layouts.profile')
+@extends('layouts.app')
 
 @section('title', 'Мой профиль')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-4">
-            <div class="profile-sidebar text-center mb-4">
-                <img src="{{ $user->avatar_url }}"
-                     alt="{{ $user->name }}"
-                     class="avatar-img rounded-circle mb-3">
-
-                <h4>{{ $user->name }}</h4>
-                <p class="text-muted">{{ $user->email }}</p>
-
-                <div class="mb-3">
-                    <span class="badge bg-primary">{{ $user->experience_label }}</span>
-                    @if($user->favorite_fishing_type)
-                        <span class="badge bg-info">{{ $user->favorite_fishing_type }}</span>
-                    @endif
-                </div>
-
-                <div class="profile-nav">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('profile.show') }}">
-                                <i class="bi bi-person"></i> Профиль
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('profile.edit') }}">
-                                <i class="bi bi-pencil"></i> Редактировать профиль
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('profile.password.edit') }}">
-                                <i class="bi bi-key"></i> Изменить пароль
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('orders.index') }}">
-                                <i class="bi bi-receipt"></i> Мои заказы
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
+    <div class="profile-layout">
+        <!-- Сайдбар -->
+        <div class="sidebar">
+            <h3>Меню</h3>
+            <a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.show') ? 'active' : '' }}">
+                📋 Мой профиль
+            </a>
+            <a href="{{ route('profile.edit') }}" class="{{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                ✏️ Редактировать профиль
+            </a>
+            <a href="{{ route('profile.orders') }}" class="{{ request()->routeIs('profile.orders') ? 'active' : '' }}">
+                📦 Мои заказы
+            </a>
+            <a href="{{ route('profile.change-password') }}" class="{{ request()->routeIs('profile.change-password') ? 'active' : '' }}">
+                🔐 Изменить пароль
+            </a>
         </div>
 
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-info-circle"></i> Информация о профиле</h5>
-                    <a href="{{ route('profile.edit') }}" class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-pencil"></i> Редактировать
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <table class="table table-sm">
-                                <tr>
-                                    <th style="width: 40%;">Имя:</th>
-                                    <td>{{ $user->name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Email:</th>
-                                    <td>{{ $user->email }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Телефон:</th>
-                                    <td>{{ $user->phone ?: 'Не указан' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Пол:</th>
-                                    <td>{{ $user->gender_label }}</td>
-                                </tr>
-                            </table>
+        <!-- Основной контент -->
+        <div class="content">
+            <div class="card">
+                <h2>Мой профиль</h2>
+
+                <div class="profile-info">
+                    <div style="display: flex; align-items: center; margin-bottom: 30px;">
+                        <div style="width: 100px; height: 100px; background: #007bff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 20px;">
+                        <span style="color: white; font-size: 40px; font-weight: bold;">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </span>
                         </div>
-                        <div class="col-md-6">
-                            <table class="table table-sm">
-                                <tr>
-                                    <th style="width: 40%;">Дата рождения:</th>
-                                    <td>{{ $user->formatted_birth_date }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Опыт в рыбалке:</th>
-                                    <td>{{ $user->experience_label }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Любимый вид ловли:</th>
-                                    <td>{{ $user->favorite_fishing_type ?: 'Не указан' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Адрес:</th>
-                                    <td>{{ $user->address ?: 'Не указан' }}</td>
-                                </tr>
-                            </table>
+                        <div>
+                            <h3 style="margin: 0;">{{ Auth::user()->name }}</h3>
+                            <p style="color: #666; margin: 5px 0;">{{ Auth::user()->email }}</p>
+                            <p style="color: #888; font-size: 14px;">
+                                Зарегистрирован: {{ Auth::user()->created_at->format('d.m.Y') }}
+                            </p>
                         </div>
                     </div>
 
-                    @if($user->about)
-                        <div class="mt-3">
-                            <h6>Обо мне:</h6>
-                            <p class="card-text">{{ $user->about }}</p>
-                        </div>
-                    @endif
-                </div>
-            </div>
+                    <div class="profile-details">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <h4>Контактная информация</h4>
+                                <p><strong>Телефон:</strong> {{ Auth::user()->phone ?? 'Не указан' }}</p>
+                                <p><strong>Адрес:</strong> {{ Auth::user()->address ?? 'Не указан' }}</p>
+                            </div>
 
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> История заказов</h5>
-                    <a href="{{ route('orders.index') }}" class="btn btn-sm btn-outline-primary">
-                        Все заказы
-                    </a>
-                </div>
-                <div class="card-body">
-                    @if($orders->count() > 0)
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>№ Заказа</th>
-                                    <th>Дата</th>
-                                    <th>Сумма</th>
-                                    <th>Статус</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($orders as $order)
-                                    <tr>
-                                        <td>{{ $order->order_number }}</td>
-                                        <td>{{ $order->created_at->format('d.m.Y') }}</td>
-                                        <td>{{ number_format($order->total_amount, 0, ',', ' ') }} ₽</td>
-                                        <td>
-                                            @php
-                                                $statusColors = [
-                                                    'pending' => 'warning',
-                                                    'processing' => 'info',
-                                                    'shipped' => 'primary',
-                                                    'delivered' => 'success',
-                                                    'cancelled' => 'danger'
-                                                ];
-                                                $statusLabels = [
-                                                    'pending' => 'Ожидает',
-                                                    'processing' => 'В обработке',
-                                                    'shipped' => 'Отправлен',
-                                                    'delivered' => 'Доставлен',
-                                                    'cancelled' => 'Отменен'
-                                                ];
-                                            @endphp
-                                            <span class="badge bg-{{ $statusColors[$order->status] ?? 'secondary' }}">
-                                                {{ $statusLabels[$order->status] ?? $order->status }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('orders.show', $order) }}"
-                                               class="btn btn-sm btn-outline-info">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                            <div>
+                                <h4>Статистика</h4>
+                                <p><strong>Всего заказов:</strong> {{ $user->orders()->count() ?? 0 }}</p>
+                                <p><strong>Последний вход:</strong> {{ now()->format('d.m.Y H:i') }}</p>
+                            </div>
                         </div>
+                    </div>
 
-                        {{ $orders->links() }}
-                    @else
-                        <div class="text-center py-4">
-                            <i class="bi bi-cart text-muted" style="font-size: 3rem;"></i>
-                            <p class="mt-3">У вас еще нет заказов</p>
-                            <a href="{{ route('products.index') }}" class="btn btn-primary">
-                                Перейти к покупкам
-                            </a>
-                        </div>
-                    @endif
+                    <div style="margin-top: 30px; display: flex; gap: 10px;">
+                        <a href="{{ route('profile.edit') }}" class="btn">Редактировать профиль</a>
+                        <a href="{{ route('profile.change-password') }}" class="btn btn-success">Изменить пароль</a>
+                    </div>
                 </div>
             </div>
         </div>

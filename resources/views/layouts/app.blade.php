@@ -33,6 +33,7 @@
         @else
 
         @endif
+        <a href="{{ route('profile.show') }}">Профиль</a>
     </div>
 </nav>
 

@@ -10,21 +10,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('order_number')->unique(); // Уникальный номер заказа
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('customer_name'); // Имя клиента
-            $table->string('customer_email'); // Email клиента
-            $table->string('customer_phone'); // Телефон клиента
-            $table->text('customer_address')->nullable(); // Адрес доставки
-            $table->text('notes')->nullable(); // Комментарии к заказу
-            $table->decimal('total_amount', 10, 2)->default(0); // Общая сумма
-            $table->enum('status', [
-                'pending',     // Ожидает обработки
-                'processing',  // В обработке
-                'shipped',     // Отправлен
-                'delivered',   // Доставлен
-                'cancelled'    // Отменен
-            ])->default('pending');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('order_number')->unique();
+            $table->decimal('total_amount', 10, 2);
+            $table->string('status')->default('pending'); // pending, processing, completed, cancelled
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
