@@ -1,42 +1,24 @@
-{{-- resources/views/auth/forgot-password.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Восстановление пароля')
 
 @section('content')
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Восстановление пароля</h4>
-                </div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <div class="card">
+        <h2>Восстановление пароля</h2>
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                   id="email" name="email" value="{{ old('email') }}" required>
-                            @error('email')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <button type="submit" class="btn btn-warning w-100">Отправить ссылку для сброса</button>
-
-                        <div class="text-center mt-3">
-                            <a href="{{ route('login') }}">← Вернуться ко входу</a>
-                        </div>
-                    </form>
-                </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" value="{{ old('email') }}" required>
+                @error('email') <div class="error">{{ $message }}</div> @enderror
             </div>
-        </div>
+
+            <button type="submit">Отправить ссылку для сброса</button>
+
+            <p style="margin-top: 15px;">
+                <a href="{{ route('login') }}">Вернуться к входу</a>
+            </p>
+        </form>
     </div>
 @endsection

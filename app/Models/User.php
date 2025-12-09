@@ -2,98 +2,103 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+
+
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use  HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'email',
         'password',
         'phone',
-        'address',
-        'birth_date',
         'avatar',
-        'gender',
-        'fishing_experience',
-        'about',
-        'favorite_fishing_type'
+        'role',
+        'is_active',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'birth_date' => 'date'
+        'password' => 'hashed',
+        'is_active' => 'boolean',
     ];
 
-    public function isAdmin()
+    /**
+     * Scope для активных пользователей
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
+     * Scope для администраторов
+     */
+    public function scopeAdmins($query)
+    {
+        return $query->where('role', 'admin');
+    }
+
+    /**
+     * Проверка, является ли пользователь администратором
+     */
+    public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
 
-    public function isUser()
+    /**
+     * Мутатор для приведения email к нижнему регистру
+     */
+    public function setEmailAttribute($value)
     {
-        return $this->role === 'user';
+        $this->attributes['email'] = strtolower($value);
     }
 
-    public function getFormattedBirthDateAttribute()
+    /**
+     * Мутатор для хеширования пароля
+     */
+    public function setPasswordAttribute($value)
     {
-        return $this->birth_date ? $this->birth_date->format('d.m.Y') : 'Не указана';
+        $this->attributes['password'] = bcrypt($value);
     }
 
-    public function getGenderLabelAttribute()
-    {
-        $genders = [
-            'male' => 'Мужской',
-            'female' => 'Женский',
-            'other' => 'Другой'
-        ];
-
-        return $genders[$this->gender] ?? 'Не указан';
-    }
-
-    public function getExperienceLabelAttribute()
-    {
-        $experiences = [
-            'beginner' => 'Начинающий',
-            'amateur' => 'Любитель',
-            'professional' => 'Профессионал'
-        ];
-
-        return $experiences[$this->fishing_experience] ?? 'Не указан';
-    }
-
+    /**
+     * Аксессор для полного URL аватара
+     */
     public function getAvatarUrlAttribute()
     {
         if ($this->avatar) {
             return asset('storage/' . $this->avatar);
         }
 
-        // Генерация аватарки по умолчанию на основе имени
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+        // Генерация граватара
+        $hash = md5(strtolower(trim($this->email)));
+        return "https://www.gravatar.com/avatar/{$hash}?d=mp";
     }
-
-// Отношение к заказам
-
-    public function cartItems()
-    {
-        return $this->hasMany(CartItem::class);
-    }
-
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    public function wishlists()
-    {
-        return $this->hasMany(Wishlist::class);
-    }
-
 }

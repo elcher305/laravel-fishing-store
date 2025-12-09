@@ -1,48 +1,61 @@
-{{-- resources/views/layouts/app.blade.php --}}
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fishing Store - @yield('title')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>@yield('title', 'Auth System')</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        nav a:hover { text-decoration: underline; }
+        .alert { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .alert-success { background: #d4edda; color: #155724; }
+        .alert-error { background: #f8d7da; color: #721c24; }
+        .card { border: 1px solid #ddd; border-radius: 5px; padding: 20px; margin: 20px 0; }
+        input, button { display: block; width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .form-group { margin-bottom: 15px; }
+        .error { color: red; font-size: 0.9em; }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav>
     <div class="container">
-        <a class="navbar-brand" href="/">🎣 Fishing Store</a>
-        <div class="navbar-nav ms-auto">
-            @auth
-                <span class="nav-item nav-link">Привет, {{ Auth::user()->name }}!</span>
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-outline-danger btn-sm">Выйти</button>
-                </form>
-            @else
-                <a class="nav-link" href="{{ route('login') }}">Вход</a>
-                <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
-            @endauth
-        </div>
+        <a href="/">Главная</a>
+        @if(Auth::check())
+            <a href="{{ route('dashboard') }}">Кабинет</a>
+            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                @csrf
+                <button type="submit" style="display: inline; width: auto; padding: 5px 10px;">Выйти</button>
+            </form>
+        @else
+
+        @endif
     </div>
 </nav>
 
-<div class="container mt-4">
+<div class="container">
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
+    @if(session('status'))
+        <div class="alert alert-success">{{ session('status') }}</div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-error">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
     @yield('content')
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

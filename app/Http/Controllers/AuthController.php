@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -18,24 +21,24 @@ class AuthController extends Controller
     // Обработка регистрации
     public function register(Request $request)
     {
-        // Простая валидация
+        // Валидация
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // Создаем пользователя
+        // Создание пользователя
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // Автоматически входим после регистрации
+        // Автоматический вход после регистрации
         Auth::login($user);
 
-        return redirect('/dashboard')->with('success', 'Регистрация успешна!');
+        return redirect()->route('dashboard')->with('success', 'Регистрация успешна!');
     }
 
     // Показать форму входа
@@ -56,16 +59,15 @@ class AuthController extends Controller
         // Попытка аутентификации
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/dashboard')->with('success', 'Вход выполнен!');
+            return redirect()->route('dashboard')->with('success', 'Добро пожаловать!');
         }
 
-        // Если аутентификация не удалась
         return back()->withErrors([
             'email' => 'Неверный email или пароль.',
-        ])->onlyInput('email');
+        ]);
     }
 
-    // Выход из системы
+    // Выход
     public function logout(Request $request)
     {
         Auth::logout();
@@ -81,12 +83,48 @@ class AuthController extends Controller
         return view('auth.forgot-password');
     }
 
-    // Отправить ссылку для сброса пароля (упрощенная версия)
-    public function forgotPassword(Request $request)
+    // Отправка ссылки для восстановления
+    public function sendResetLink(Request $request)
     {
-        $request->validate(['email' => 'required|email|exists:users,email']);
+        $request->validate(['email' => 'required|email']);
 
+        // Простая реализация - в реальном проекте используйте Laravel Password
+        $user = User::where('email', $request->email)->first();
 
-        return back()->with('status', 'Ссылка для сброса пароля отправлена на email (в реальном проекте).');
+        if ($user) {
+            // Здесь обычно отправляется email со ссылкой
+            // Для простоты просто покажем сообщение
+            return back()->with('status', 'Если email существует, мы отправили ссылку для сброса пароля.');
+        }
+
+        return back()->withErrors(['email' => 'Пользователь с таким email не найден.']);
+    }
+
+    // Показать форму сброса пароля
+    public function showResetPassword($token)
+    {
+        return view('auth.reset-password', ['token' => $token]);
+    }
+
+    // Обработка сброса пароля
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        // Простая реализация - в реальном проекте проверяйте токен
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            return redirect()->route('login')->with('success', 'Пароль успешно изменен!');
+        }
+
+        return back()->withErrors(['email' => 'Не удалось сбросить пароль.']);
     }
 }

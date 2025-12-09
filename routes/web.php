@@ -2,49 +2,37 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
+// Регистрация
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
-// Аутентификация
-Route::controller(AuthController::class)->group(function () {
-    // Регистрация
-    Route::get('/register', 'showRegister')->name('register');
-    Route::post('/register', 'register');
+// Вход/выход
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Вход
-    Route::get('/login', 'showLogin')->name('login');
-    Route::post('/login', 'login');
-
-    // Выход
-    Route::post('/logout', 'logout')->name('logout');
-
-    // Восстановление пароля
-    Route::get('/forgot-password', 'showForgotPassword')
-        ->name('password.request');
-    Route::post('/forgot-password', 'forgotPassword')
-        ->name('password.email');
-});
+// Восстановление пароля
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 // Защищенные маршруты (только для авторизованных)
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
-});
-
-// Если нужно, добавьте эту строку для проверки маршрутов
-Route::get('/routes', function () {
-    return \Route::getRoutes();
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 });
 
 // Маршруты для управления товарами
