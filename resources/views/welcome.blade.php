@@ -35,7 +35,7 @@
             <a class="icons-menu">
                 <img src="img/Heart-blue.svg" alt="">
 
-                <a href="{{ route('cart.index')}}"><img src="img/fi-rr-shopping-bag.svg" alt="Корзина"></a>
+
             </a>
         </form>
 

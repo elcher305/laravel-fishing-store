@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
@@ -41,22 +40,21 @@ Route::middleware('auth')->group(function () {
         Route::put('/update', [ProfileController::class, 'update'])->name('profile.update');
         Route::get('/change-password', [ProfileController::class, 'showChangePassword'])->name('profile.change-password');
         Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password.post');
+        Route::delete('/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
     });
 
-    // Заказы
-    Route::get('/orders', [OrderController::class, 'index'])->name('profile.orders');
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
 
-// Маршруты для управления товарами
-Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/create', [ProductController::class, 'create'])->name('products.create');
-    Route::post('/', [ProductController::class, 'store'])->name('products.store');
-    Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::put('/{product}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+// Маршруты для товаров с префиксом 'admin'
+Route::prefix('admin')->group(function () {
+    Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 });
+
 
 
 // Маршруты для управления заказами
@@ -81,15 +79,18 @@ Route::prefix('products')->group(function () {
 //    });
 //});
 
-//Работа с корзиной
-Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/add/{product}', [CartController::class, 'add'])->name('cart.add');
-    Route::put('/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
-    Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout')->middleware('auth');
-    Route::post('/order', [CartController::class, 'storeOrder'])->name('cart.storeOrder')->middleware('auth');
 
-});
+////Работа с корзиной
+//Route::prefix('cart')->group(function () {
+//    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+//    Route::post('/add/{product}', [CartController::class, 'add'])->name('cart.add');
+//    Route::put('/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+//    Route::delete('/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
+//    Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
+//    Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout')->middleware('auth');
+//    Route::post('/order', [CartController::class, 'storeOrder'])->name('cart.storeOrder')->middleware('auth');
+//
+//});
+
+
 
