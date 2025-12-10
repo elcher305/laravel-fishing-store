@@ -1,191 +1,195 @@
-@extends('layouts.orders')
+@extends('layouts.admin')
 
-@section('title', 'Редактирование заказа ' . $order->order_number)
+@section('title', 'Редактирование заказа #' . $order->order_number)
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h4 class="mb-0">
-                <i class="bi bi-pencil-square"></i> Редактирование заказа: {{ $order->order_number }}
-            </h4>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Редактирование заказа #{{ $order->order_number }}</h1>
+            <div>
+                <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </a>
+            </div>
         </div>
 
-        <div class="card-body">
-            <form method="POST" action="{{ route('orders.update', $order) }}">
-                @csrf
-                @method('PUT')
+        <form action="{{ route('admin.orders.update', $order) }}" method="POST">
+            @csrf
+            @method('PUT')
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <h5 class="mb-0">Основная информация</h5>
+            <div class="row">
+                <!-- Левая колонка -->
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Информация о клиенте</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="customer_name" class="form-label">Имя клиента *</label>
+                                <input type="text" class="form-control @error('customer_name') is-invalid @enderror"
+                                       id="customer_name" name="customer_name"
+                                       value="{{ old('customer_name', $order->customer_name) }}" required>
+                                @error('customer_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="card-body">
-                                <div class="mb-3">
+
+                            <div class="mb-3">
+                                <label for="customer_email" class="form-label">Email *</label>
+                                <input type="email" class="form-control @error('customer_email') is-invalid @enderror"
+                                       id="customer_email" name="customer_email"
+                                       value="{{ old('customer_email', $order->customer_email) }}" required>
+                                @error('customer_email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="customer_phone" class="form-label">Телефон *</label>
+                                <input type="text" class="form-control @error('customer_phone') is-invalid @enderror"
+                                       id="customer_phone" name="customer_phone"
+                                       value="{{ old('customer_phone', $order->customer_phone) }}" required>
+                                @error('customer_phone')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="customer_address" class="form-label">Адрес доставки *</label>
+                                <textarea class="form-control @error('customer_address') is-invalid @enderror"
+                                          id="customer_address" name="customer_address" rows="3" required>{{ old('customer_address', $order->customer_address) }}</textarea>
+                                @error('customer_address')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правая колонка -->
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Детали заказа</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
                                     <label for="status" class="form-label">Статус заказа *</label>
-                                    <select name="status" id="status" class="form-select" required>
-                                        @foreach($statuses as $key => $label)
-                                            <option value="{{ $key }}"
-                                                {{ old('status', $order->status) == $key ? 'selected' : '' }}>
+                                    <select class="form-select @error('status') is-invalid @enderror"
+                                            id="status" name="status" required>
+                                        @foreach($statuses as $value => $label)
+                                            <option value="{{ $value }}" {{ old('status', $order->status) == $value ? 'selected' : '' }}>
                                                 {{ $label }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="customer_name" class="form-label">ФИО клиента *</label>
-                                    <input type="text"
-                                           class="form-control"
-                                           id="customer_name"
-                                           name="customer_name"
-                                           value="{{ old('customer_name', $order->customer_name) }}"
-                                           required>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="customer_email" class="form-label">Email *</label>
-                                        <input type="email"
-                                               class="form-control"
-                                               id="customer_email"
-                                               name="customer_email"
-                                               value="{{ old('customer_email', $order->customer_email) }}"
-                                               required>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="customer_phone" class="form-label">Телефон *</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               id="customer_phone"
-                                               name="customer_phone"
-                                               value="{{ old('customer_phone', $order->customer_phone) }}"
-                                               required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="customer_address" class="form-label">Адрес доставки</label>
-                                    <textarea class="form-control"
-                                              id="customer_address"
-                                              name="customer_address"
-                                              rows="2">{{ old('customer_address', $order->customer_address) }}</textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="notes" class="form-label">Комментарий к заказу</label>
-                                    <textarea class="form-control"
-                                              id="notes"
-                                              name="notes"
-                                              rows="2">{{ old('notes', $order->notes) }}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <h5 class="mb-0">Товары в заказе</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th>Товар</th>
-                                            <th>Цена</th>
-                                            <th>Кол-во</th>
-                                            <th>Сумма</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($order->items as $item)
-                                            <tr>
-                                                <td>{{ $item->product_name }}</td>
-                                                <td>{{ number_format($item->price, 0, ',', ' ') }} ₽</td>
-                                                <td>{{ $item->quantity }}</td>
-                                                <td>{{ number_format($item->subtotal, 0, ',', ' ') }} ₽</td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                            <th colspan="3" class="text-end">Итого:</th>
-                                            <th class="text-end text-primary">{{ number_format($order->total_amount, 0, ',', ' ') }} ₽</th>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">Добавить товар</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <label for="new_product_id" class="form-label">Выберите товар</label>
-                                    <select id="new_product_id" class="form-select">
-                                        <option value="">Выберите товар</option>
-                                        @foreach($products as $product)
-                                            <option value="{{ $product->id }}" data-price="{{ $product->price }}">
-                                                {{ $product->name }} ({{ number_format($product->price, 0, ',', ' ') }} ₽)
+                                <div class="col-md-6 mb-3">
+                                    <label for="payment_method" class="form-label">Способ оплаты *</label>
+                                    <select class="form-select @error('payment_method') is-invalid @enderror"
+                                            id="payment_method" name="payment_method" required>
+                                        @foreach($paymentMethods as $value => $label)
+                                            <option value="{{ $value }}" {{ old('payment_method', $order->payment_method) == $value ? 'selected' : '' }}>
+                                                {{ $label }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('payment_method')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="mb-3">
-                                    <label for="new_quantity" class="form-label">Количество</label>
-                                    <input type="number" id="new_quantity" class="form-control" min="1" value="1">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="payment_status" class="form-label">Статус оплаты *</label>
+                                    <select class="form-select @error('payment_status') is-invalid @enderror"
+                                            id="payment_status" name="payment_status" required>
+                                        @foreach($paymentStatuses as $value => $label)
+                                            <option value="{{ $value }}" {{ old('payment_status', $order->payment_status) == $value ? 'selected' : '' }}>
+                                                {{ $label }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('payment_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <button type="button" class="btn btn-outline-primary" onclick="addProduct()">
-                                    <i class="bi bi-plus"></i> Добавить товар
-                                </button>
-                                <p class="text-muted mt-2 small">
-                                    Для изменения состава заказа обратитесь к администратору
-                                </p>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="shipping" class="form-label">Стоимость доставки *</label>
+                                    <input type="number" step="0.01" class="form-control @error('shipping') is-invalid @enderror"
+                                           id="shipping" name="shipping"
+                                           value="{{ old('shipping', $order->shipping) }}" required>
+                                    @error('shipping')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tax" class="form-label">Налог *</label>
+                                <input type="number" step="0.01" class="form-control @error('tax') is-invalid @enderror"
+                                       id="tax" name="tax" value="{{ old('tax', $order->tax) }}" required>
+                                @error('tax')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Примечания</label>
+                                <textarea class="form-control @error('notes') is-invalid @enderror"
+                                          id="notes" name="notes" rows="3">{{ old('notes', $order->notes) }}</textarea>
+                                @error('notes')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ route('orders.show', $order) }}" class="btn btn-secondary">
-                        <i class="bi bi-x-circle"></i> Отмена
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle"></i> Сохранить изменения
-                    </button>
+                    <!-- Суммы -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Сумма заказа</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm">
+                                <tr>
+                                    <td>Стоимость товаров:</td>
+                                    <td class="text-end">{{ number_format($order->subtotal, 2) }} ₽</td>
+                                </tr>
+                                <tr>
+                                    <td>Доставка:</td>
+                                    <td class="text-end">{{ number_format($order->shipping, 2) }} ₽</td>
+                                </tr>
+                                <tr>
+                                    <td>Налог:</td>
+                                    <td class="text-end">{{ number_format($order->tax, 2) }} ₽</td>
+                                </tr>
+                                <tr class="table-active">
+                                    <td><strong>Итого:</strong></td>
+                                    <td class="text-end"><strong>{{ number_format($order->total, 2) }} ₽</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{{ route('orders.show', $order) }}" class="btn btn-secondary">
+                    Отмена
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    Сохранить изменения
+                </button>
+            </div>
+        </form>
     </div>
-
-    @push('scripts')
-        <script>
-            function addProduct() {
-                const select = document.getElementById('new_product_id');
-                const quantity = document.getElementById('new_quantity').value;
-
-                if (!select.value || quantity < 1) {
-                    alert('Выберите товар и укажите количество');
-                    return;
-                }
-
-                const productName = select.options[select.selectedIndex].text;
-                const price = parseFloat(select.options[select.selectedIndex].dataset.price);
-                const subtotal = price * quantity;
-
-                alert('Товар "' + productName + '" добавлен.\nСумма: ' + subtotal.toFixed(0) + ' ₽\n\nДля полной интеграции требуется дополнительная разработка.');
-
-                // Сброс формы
-                select.value = '';
-                document.getElementById('new_quantity').value = 1;
-            }
-        </script>
-    @endpush
 @endsection

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,8 +39,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->name('profile.show');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/update', [ProfileController::class, 'update'])->name('profile.update');
-        Route::get('/change-password', [ProfileController::class, 'showChangePassword'])->name('profile.change-password');
-        Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password.post');
+        Route::get('/password', [ProfileController::class, 'editPassword'])->name('profile.password.edit');
+        Route::put('/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
         Route::delete('/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
     });
 
@@ -56,16 +57,15 @@ Route::prefix('admin')->group(function () {
 });
 
 
-
 // Маршруты для управления заказами
-//Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-//Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('orders.user')->middleware('auth');
-//Route::get('/orders/create-demo', [OrderController::class, 'createDemo'])->name('orders.createDemo');
-//Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-//Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
-//Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
-//Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-//Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/my-orders', [OrderController::class, 'userOrders'])->name('orders.user')->middleware('auth');
+Route::get('/orders/create-demo', [OrderController::class, 'createDemo'])->name('orders.createDemo');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
 //// Маршруты для профиля (требуют аутентификации)
 //Route::middleware('auth')->group(function () {

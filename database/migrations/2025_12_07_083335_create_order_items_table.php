@@ -12,10 +12,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->string('product_name'); // Название товара на момент заказа
-            $table->decimal('price', 10, 2); // Цена на момент заказа
-            $table->integer('quantity')->default(1);
-            $table->decimal('subtotal', 10, 2); // price * quantity
+            $table->string('product_name');
+            $table->decimal('price', 10, 2);
+            $table->integer('quantity');
+            $table->decimal('total', 10, 2);
             $table->timestamps();
         });
     }

@@ -10,20 +10,75 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'order_number',
-        'total_amount',
-        'status',
+        'user_id',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
+        'customer_address',
         'notes',
+        'status',
+        'subtotal',
+        'tax',
+        'shipping',
+        'total',
+        'payment_method',
+        'payment_status'
     ];
 
     protected $casts = [
-        'total_amount' => 'decimal:2',
+        'subtotal' => 'decimal:2',
+        'tax' => 'decimal:2',
+        'shipping' => 'decimal:2',
+        'total' => 'decimal:2',
     ];
 
-    // Отношение с пользователем
+    // Отношения
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    // Scope для фильтрации по статусу
+    public function scopeStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
+    // Методы для статусов
+    public function isPending()
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isProcessing()
+    {
+        return $this->status === 'processing';
+    }
+
+    public function isShipped()
+    {
+        return $this->status === 'shipped';
+    }
+
+    public function isDelivered()
+    {
+        return $this->status === 'delivered';
+    }
+
+    public function isCancelled()
+    {
+        return $this->status === 'cancelled';
+    }
+
+    // Генерация номера заказа
+    public static function generateOrderNumber()
+    {
+        return 'ORD-' . date('Ymd') . '-' . strtoupper(uniqid());
     }
 }
