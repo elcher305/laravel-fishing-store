@@ -1,66 +1,102 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель администратора</title>
-    <link rel="stylesheet" href="{{ asset('css/dashboard-admin.css') }}">
+@extends('admin.layouts.app')
 
-</head>
-<body>
-<div class="container">
-    <div class="header">
-        <h1 class="admin-title">Панель администратора</h1>
-        <div class="nav">
-            <a href="{{ route('dashboard') }}">На главную</a>
-            <a href="{{ route('profile.show') }}">Профиль</a>
-            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                @csrf
-                <button type="submit" style="
-                        padding: 10px 20px;
-                        background: #f8f9fa;
-                        color: #e74c3c;
-                        border: 1px solid #ddd;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        font-family: inherit;
-                        font-size: inherit;
-                    ">Выйти</button>
-            </form>
+@section('title', 'Панель администратора')
+
+@section('content')
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">
+            <i class="fas fa-tachometer-alt"></i> Панель администратора
+        </h1>
+        <span class="badge bg-success">
+        <i class="fas fa-user-shield"></i> Администратор
+    </span>
+    </div>
+
+    <!-- Статистика -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Товары</h5>
+                    <h2 class="text-primary">{{ \App\Models\Product::count() }}</h2>
+                    <a href="{{ route('admin.products.index') }}" class="btn btn-sm btn-outline-primary">
+                        Управление
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Пользователи</h5>
+                    <h2 class="text-success">{{ \App\Models\User::count() }}</h2>
+                    <a href="#" class="btn btn-sm btn-outline-success">
+                        Управление
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-warning">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Заказы</h5>
+                    <h2 class="text-warning">{{ \App\Models\Order::count() ?? 0 }}</h2>
+                    <a href="#" class="btn btn-sm btn-outline-warning">
+                        Управление
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-info">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Доход</h5>
+                    <h2 class="text-info">{{ number_format(\App\Models\Order::sum('total') ?? 0, 0, ',', ' ') }} ₽</h2>
+                    <a href="#" class="btn btn-sm btn-outline-info">
+                        Отчет
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="content">
-        <h2>Добро пожаловать, Администратор!</h2>
-        <p>Вы вошли в панель администратора системы.</p>
-
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">{{ \App\Models\User::count() }}</div>
-                <div class="stat-label">Всего пользователей</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ \App\Models\User::where('role_id', 1)->count() }}</div>
-                <div class="stat-label">Администраторов</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ \App\Models\User::where('role_id', 2)->count() }}</div>
-                <div class="stat-label">Обычных пользователей</div>
-            </div>
+    <!-- Быстрые действия -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Быстрые действия</h5>
         </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="{{ route('admin.products.create') }}" class="card text-decoration-none text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-plus-circle fa-3x text-success"></i>
+                        </div>
+                        <h6>Добавить товар</h6>
+                    </a>
+                </div>
 
-        <div class="admin-section">
-            <h3>Быстрые действия</h3>
-            <div style="display: flex; gap: 15px; margin-top: 15px;">
-                <a href="{{ route('profile.show') }}" class="btn btn-primary">Мой профиль</a>
-                <a href="{{ route('dashboard') }}" class="btn btn-secondary">На главную</a>
+                <div class="col-md-4">
+                    <a href="{{ route('admin.products.index') }}" class="card text-decoration-none text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-edit fa-3x text-primary"></i>
+                        </div>
+                        <h6>Редактировать товары</h6>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="{{ route('home') }}" target="_blank" class="card text-decoration-none text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-external-link-alt fa-3x text-dark"></i>
+                        </div>
+                        <h6>Перейти на сайт</h6>
+                    </a>
+                </div>
             </div>
-        </div>
-
-        <div class="admin-section">
-            <h3>Системная информация</h3>
         </div>
     </div>
-</div>
-</body>
-</html>
+@endsection

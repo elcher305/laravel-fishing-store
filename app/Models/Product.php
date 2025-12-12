@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -18,41 +17,65 @@ class Product extends Model
         'image',
         'category',
         'brand',
-        'weight',
+        'specifications',
+        'is_active',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
-        'weight' => 'decimal:3',
+        'specifications' => 'array',
+        'is_active' => 'boolean',
     ];
 
-    public function cartItems(): HasMany
+    /**
+     * Получить URL изображения
+     */
+    public function getImageUrlAttribute()
     {
-        return $this->hasMany(CartItem::class);
+        return $this->image ? asset('storage/' . $this->image) : asset('img/no-image.jpg');
     }
 
-    public function orderItems(): HasMany
+    /**
+     * Получить характеристики в виде массива
+     */
+    public function getSpecsArrayAttribute()
     {
-        return $this->hasMany(OrderItem::class);
+        if (!$this->specifications || !is_array($this->specifications)) {
+            return [];
+        }
+
+        return $this->specifications;
     }
 
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    public function averageRating(): float
-    {
-        return $this->reviews()->avg('rating') ?? 0;
-    }
-
-    public function reviewsCount(): int
-    {
-        return $this->reviews()->count();
-    }
-
-    public function isAvailable(): bool
+    /**
+     * Проверить, есть ли товар в наличии
+     */
+    public function inStock()
     {
         return $this->stock > 0;
+    }
+
+    /**
+     * Получить статус товара
+     */
+    public function getStatusAttribute()
+    {
+        if (!$this->is_active) {
+            return 'Неактивен';
+        }
+
+        return $this->inStock() ? 'В наличии' : 'Нет в наличии';
+    }
+
+    /**
+     * Получить класс для статуса
+     */
+    public function getStatusClassAttribute()
+    {
+        if (!$this->is_active) {
+            return 'secondary';
+        }
+
+        return $this->inStock() ? 'success' : 'danger';
     }
 }

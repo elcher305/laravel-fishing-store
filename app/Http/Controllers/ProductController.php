@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -84,5 +83,10 @@ class ProductController extends Controller
             ->get(['id', 'name', 'price', 'image']);
 
         return response()->json($products);
+    }
+
+    public function create()
+    {
+        return view('admin.products.create');
     }
 }

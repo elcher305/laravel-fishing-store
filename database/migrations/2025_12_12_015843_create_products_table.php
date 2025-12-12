@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('category')->nullable();
             $table->string('brand')->nullable();
-            $table->decimal('weight', 8, 3)->nullable(); // вес в граммах
+            $table->json('specifications')->nullable(); // Характеристики в JSON
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -6,7 +6,6 @@
     <title>Мой профиль</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-
 </head>
 <body>
 <div class="profile-container">

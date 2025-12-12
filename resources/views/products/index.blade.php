@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог товаров - {{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('css/style-catalog.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('css/product.css') }}">
 </head>
 <body>
 
@@ -99,7 +99,6 @@
                 </aside>
 
                 <div class="container">
-                    <h1 class="best-products-title">Каталог товаров</h1>
 
                     @if(session('success'))
                         <div class="alert alert-success">
@@ -171,14 +170,360 @@
 
                                 @if($product->reviews_count > 0)
                                     <div style="margin-top: 10px; font-size: 14px; color: #666;">
-                                        ★ {{ number_format($product->average_rating, 1) }} ({{ $product->reviews_count }})
+                                         {{ number_format($product->average_rating, 1) }} ({{ $product->reviews_count }})
                                     </div>
                                 @endif
                             </div>
                         @endforeach
                     </div>
+                    <div class="container">
+                        <h1 class="best-products-title">Товары для летнее рыбалки</h1>
 
-                    <!-- Пагинация -->
+                        <div class="products-grid">
+                            <!-- Товар 1 -->
+                            <div class="product-card">
+                                <div class="product-badge">ЗАВОДНОЕ</div>
+                                <div class="product-size">SIZE #7</div>
+                                <img src="img/spoon.png" alt="Кольцо">
+                                <h3 class="product-name">Кольцо заводное Dunaev size #7</h3>
+
+                                <div class="product-sizes">
+                                    <span class="size-option">3.5мм</span>
+                                    <span class="size-option">4мм</span>
+                                    <span class="size-option">5мм</span>
+                                    <span class="size-option">6мм</span>
+                                    <span class="size-option">7мм</span>
+                                </div>
+
+                                <div class="product-stock in-stock">Есть в наличии</div>
+                                <div class="product-price">100P</div>
+
+                                <button class="add-to-cart-btn" >В корзину</button>
+                            </div>
+
+                            <!-- Товар 2 -->
+                            <div class="product-card">
+                                <div class="product-badge">ШНУР</div>
+                                <div class="product-size">PE X4 150 м.</div>
+                                <img src="img/Cord.png" alt="Шнур">
+                                <h3 class="product-name">Шнур Дунаев Braid PE X4 150 м.</h3>
+
+                                <div class="product-sizes">
+                                    <span class="size-option">0.38мм</span>
+                                    <span class="size-option">0.20мм</span>
+                                    <span class="size-option">0.12мм</span>
+                                    <span class="size-option">0.08мм</span>
+                                </div>
+
+                                <div class="product-stock low-stock">Осталось 2шт</div>
+                                <div class="product-price">600P</div>
+
+                                <button class="add-to-cart-btn">В корзину</button>
+                            </div>
+
+                            <!-- Товар 3 -->
+                            <div class="product-card">
+                                <div class="product-badge">ПРЕМИУМ</div>
+                                <div class="product-size">Серия 107</div>
+                                <img src="img/hooks.png" alt="Крючок">
+                                <h3 class="product-name">Премиум крючок Дунаев </h3>
+
+                                <div class="product-sizes">
+                                    <span class="size-option">0.41мм</span>
+                                    <span class="size-option">0.33мм</span>
+                                    <span class="size-option">0.30мм</span>
+                                    <span class="size-option">0.28мм</span>
+                                </div>
+
+                                <div class="product-stock out-of-stock">Нет в наличии</div>
+                                <div class="product-price">145P</div>
+
+                                <button class="add-to-cart-btn" disabled>Нет в наличии</button>
+                            </div>
+
+                            <!-- Товар 4 -->
+                            <div class="product-card">
+                                <div class="product-badge">ПРИКОРМКА</div>
+                                <div class="product-size">BLACK Series</div>
+                                <img src="img/lure.png" alt="Прикормка">
+                                <h3 class="product-name">Прикормка DUNAEV BLACK</h3>
+
+                                <div class="product-sizes">
+                                    <span class="size-option">0.41мм</span>
+                                    <span class="size-option">0.33мм</span>
+                                    <span class="size-option">0.30мм</span>
+                                    <span class="size-option">0.28мм</span>
+                                </div>
+
+                                <div class="product-stock in-stock">Есть в наличии</div>
+                                <div class="product-price">268P</div>
+
+                                <button class="add-to-cart-btn">В корзину</button>
+                            </div>
+                            <div class="product-card">
+                                <div class="product-badge">ПРЕМИУМ</div>
+                                <div class="product-size">Серия 107</div>
+                                <img src="img/hooks.png" alt="Крючок">
+                                <h3 class="product-name">Премиум крючок Дунаев </h3>
+
+                                <div class="product-sizes">
+                                    <span class="size-option">0.41мм</span>
+                                    <span class="size-option">0.33мм</span>
+                                    <span class="size-option">0.30мм</span>
+                                    <span class="size-option">0.28мм</span>
+                                </div>
+
+                                <div class="product-stock out-of-stock">Нет в наличии</div>
+                                <div class="product-price">145P</div>
+
+                                <button class="add-to-cart-btn" disabled>Нет в наличии</button>
+                            </div>
+                            <!-- Товар 1 -->
+                            <div class="product-card">
+                                <div class="product-badge">ЗАВОДНОЕ</div>
+                                <div class="product-size">SIZE #7</div>
+                                <img src="img/spoon.png" alt="Кольцо">
+                                <h3 class="product-name">Кольцо заводное Dunaev size #7</h3>
+
+                                <div class="product-sizes">
+                                    <span class="size-option">3.5мм</span>
+                                    <span class="size-option">4мм</span>
+                                    <span class="size-option">5мм</span>
+                                    <span class="size-option">6мм</span>
+                                    <span class="size-option">7мм</span>
+                                </div>
+
+                                <div class="product-stock in-stock">Есть в наличии</div>
+                                <div class="product-price">100P</div>
+
+                                <button class="add-to-cart-btn">В корзину</button>
+                            </div>
+                        </div>
+                        <!-- Каталог товаров 3 ряд-->
+                        <div class="container">
+                            <div class="products-grid">
+                                <!-- Товар 1 -->
+                                <div class="product-card">
+                                    <div class="product-badge">ЗАВОДНОЕ</div>
+                                    <div class="product-size">SIZE #7</div>
+                                    <img src="img/spoon.png" alt="Кольцо">
+                                    <h3 class="product-name">Кольцо заводное Dunaev size #7</h3>
+
+                                    <div class="product-sizes">
+                                        <span class="size-option">3.5мм</span>
+                                        <span class="size-option">4мм</span>
+                                        <span class="size-option">5мм</span>
+                                        <span class="size-option">6мм</span>
+                                        <span class="size-option">7мм</span>
+                                    </div>
+
+                                    <div class="product-stock in-stock">Есть в наличии</div>
+                                    <div class="product-price">100P</div>
+
+                                    <button class="add-to-cart-btn">В корзину</button>
+                                </div>
+
+                                <!-- Товар 2 -->
+                                <div class="product-card">
+                                    <div class="product-badge">ШНУР</div>
+                                    <div class="product-size">PE X4 150 м.</div>
+                                    <img src="img/Cord.png" alt="Шнур">
+                                    <h3 class="product-name">Шнур Дунаев Braid PE X4 150 м.</h3>
+
+                                    <div class="product-sizes">
+                                        <span class="size-option">0.38мм</span>
+                                        <span class="size-option">0.20мм</span>
+                                        <span class="size-option">0.12мм</span>
+                                        <span class="size-option">0.08мм</span>
+                                    </div>
+
+                                    <div class="product-stock low-stock">Осталось 2шт</div>
+                                    <div class="product-price">600P</div>
+
+                                    <button class="add-to-cart-btn">В корзину</button>
+                                </div>
+
+                                <!-- Товар 3 -->
+                                <div class="product-card">
+                                    <div class="product-badge">ПРЕМИУМ</div>
+                                    <div class="product-size">Серия 107</div>
+                                    <img src="img/hooks.png" alt="Крючок">
+                                    <h3 class="product-name">Премиум крючок Дунаев </h3>
+
+                                    <div class="product-sizes">
+                                        <span class="size-option">0.41мм</span>
+                                        <span class="size-option">0.33мм</span>
+                                        <span class="size-option">0.30мм</span>
+                                        <span class="size-option">0.28мм</span>
+                                    </div>
+
+                                    <div class="product-stock out-of-stock">Нет в наличии</div>
+                                    <div class="product-price">145P</div>
+
+                                    <button class="add-to-cart-btn" disabled>Нет в наличии</button>
+                                </div>
+
+                                <!-- Товар 4 -->
+                                <div class="product-card">
+                                    <div class="product-badge">ПРИКОРМКА</div>
+                                    <div class="product-size">BLACK Series</div>
+                                    <img src="img/lure.png" alt="Прикормка">
+                                    <h3 class="product-name">Прикормка DUNAEV BLACK </h3>
+
+                                    <div class="product-sizes">
+                                        <span class="size-option">0.41мм</span>
+                                        <span class="size-option">0.33мм</span>
+                                        <span class="size-option">0.30мм</span>
+                                        <span class="size-option">0.28мм</span>
+                                    </div>
+
+                                    <div class="product-stock in-stock">Есть в наличии</div>
+                                    <div class="product-price">268P</div>
+
+                                    <button class="add-to-cart-btn">В корзину</button>
+                                </div>
+                                <div class="product-card">
+                                    <div class="product-badge">ЗАВОДНОЕ</div>
+                                    <div class="product-size">SIZE #7</div>
+                                    <img src="img/spoon.png" alt="Кольцо">
+                                    <h3 class="product-name">Кольцо заводное Dunaev size #7</h3>
+
+                                    <div class="product-sizes">
+                                        <span class="size-option">3.5мм</span>
+                                        <span class="size-option">4мм</span>
+                                        <span class="size-option">5мм</span>
+                                        <span class="size-option">6мм</span>
+                                        <span class="size-option">7мм</span>
+                                    </div>
+
+                                    <div class="product-stock in-stock">Есть в наличии</div>
+                                    <div class="product-price">100P</div>
+
+                                    <button class="add-to-cart-btn">В корзину</button>
+                                </div>
+                                <div class="product-card">
+                                    <div class="product-badge">ШНУР</div>
+                                    <div class="product-size">PE X4 150 м.</div>
+                                    <img src="img/Cord.png" alt="Шнур">
+                                    <h3 class="product-name">Шнур Дунаев Braid PE X4 150 м.</h3>
+
+                                    <div class="product-sizes">
+                                        <span class="size-option">0.38мм</span>
+                                        <span class="size-option">0.20мм</span>
+                                        <span class="size-option">0.12мм</span>
+                                        <span class="size-option">0.08мм</span>
+                                    </div>
+
+                                    <div class="product-stock low-stock">Осталось 2шт</div>
+                                    <div class="product-price">600P</div>
+
+                                    <button class="add-to-cart-btn">В корзину</button>
+                                </div>
+                            </div>
+                            <!-- Каталог товаров 3 ряд-->
+                            <div class="container">
+                                <div class="products-grid">
+                                    <!-- Товар 1 -->
+                                    <div class="product-card">
+                                        <div class="product-badge">ЗАВОДНОЕ</div>
+                                        <div class="product-size">SIZE #7</div>
+                                        <img src="img/spoon.png" alt="Кольцо">
+                                        <h3 class="product-name">Кольцо заводное Dunaev size #7</h3>
+
+                                        <div class="product-sizes">
+                                            <span class="size-option">3.5мм</span>
+                                            <span class="size-option">4мм</span>
+                                            <span class="size-option">5мм</span>
+                                            <span class="size-option">6мм</span>
+                                            <span class="size-option">7мм</span>
+                                        </div>
+
+                                        <div class="product-stock in-stock">Есть в наличии</div>
+                                        <div class="product-price">100P</div>
+
+                                        <button class="add-to-cart-btn">В корзину</button>
+                                    </div>
+
+                                    <!-- Товар 2 -->
+                                    <div class="product-card">
+                                        <div class="product-badge">ШНУР</div>
+                                        <div class="product-size">PE X4 150 м.</div>
+                                        <img src="img/Cord.png" alt="Шнур">
+                                        <h3 class="product-name">Шнур Дунаев Braid PE X4 150 м.</h3>
+
+                                        <div class="product-sizes">
+                                            <span class="size-option">0.38мм</span>
+                                            <span class="size-option">0.20мм</span>
+                                            <span class="size-option">0.12мм</span>
+                                            <span class="size-option">0.08мм</span>
+                                        </div>
+
+                                        <div class="product-stock low-stock">Осталось 2шт</div>
+                                        <div class="product-price">600P</div>
+
+                                        <button class="add-to-cart-btn">В корзину</button>
+                                    </div>
+
+                                    <!-- Товар 3 -->
+                                    <div class="product-card">
+                                        <div class="product-badge">ПРЕМИУМ</div>
+                                        <div class="product-size">Серия 107</div>
+                                        <img src="img/hooks.png" alt="Крючок">
+                                        <h3 class="product-name">Премиум крючок Дунаев</h3>
+
+                                        <div class="product-sizes">
+                                            <span class="size-option">0.41мм</span>
+                                            <span class="size-option">0.33мм</span>
+                                            <span class="size-option">0.30мм</span>
+                                            <span class="size-option">0.28мм</span>
+                                        </div>
+
+                                        <div class="product-stock out-of-stock">Нет в наличии</div>
+                                        <div class="product-price">145P</div>
+
+                                        <button class="add-to-cart-btn" disabled>Нет в наличии</button>
+                                    </div>
+
+                                    <!-- Товар 4 -->
+                                    <div class="product-card">
+                                        <div class="product-badge">ПРИКОРМКА</div>
+                                        <div class="product-size">BLACK Series</div>
+                                        <img src="img/lure.png" alt="Прикормка">
+                                        <h3 class="product-name">Прикормка DUNAEV BLACK </h3>
+
+                                        <div class="product-sizes">
+                                            <span class="size-option">0.41мм</span>
+                                            <span class="size-option">0.33мм</span>
+                                            <span class="size-option">0.30мм</span>
+                                            <span class="size-option">0.28мм</span>
+                                        </div>
+
+                                        <div class="product-stock in-stock">Есть в наличии</div>
+                                        <div class="product-price">268P</div>
+
+                                        <button class="add-to-cart-btn">В корзину</button>
+                                    </div>
+                                    <div class="product-card">
+                                        <div class="product-badge">ШНУР</div>
+                                        <div class="product-size">PE X4 150 м.</div>
+                                        <img src="img/Cord.png" alt="Шнур">
+                                        <h3 class="product-name">Шнур Дунаев Braid PE X4 150 м.</h3>
+
+                                        <div class="product-sizes">
+                                            <span class="size-option">0.38мм</span>
+                                            <span class="size-option">0.20мм</span>
+                                            <span class="size-option">0.12мм</span>
+                                            <span class="size-option">0.08мм</span>
+                                        </div>
+
+                                        <div class="product-stock low-stock">Осталось 2шт</div>
+                                        <div class="product-price">600P</div>
+
+                                        <button class="add-to-cart-btn">В корзину</button>
+                                    </div>
+                                </div>
+
+                                <!-- Пагинация -->
                     <div class="pagination">
                         {{ $products->withQueryString()->links() }}
                     </div>
@@ -188,117 +533,5 @@
     </section>
 </main>
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Обработка фильтров
-        const filterForm = document.getElementById('filter-form');
-        const priceInputs = document.querySelectorAll('input[name="price"]');
-        const categoryCheckboxes = document.querySelectorAll('input[name="category[]"]');
-        const brandCheckboxes = document.querySelectorAll('input[name="brand[]"]');
-        const categoryAll = document.querySelector('input[name="category_all"]');
-        const brandAll = document.querySelector('input[name="brand_all"]');
-
-        // Обработка выбора цены
-        priceInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                document.getElementById('filter-price').value = this.value;
-                filterForm.submit();
-            });
-        });
-
-        // Обработка категорий
-        categoryCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                updateCategoryFilter();
-            });
-        });
-
-        categoryAll.addEventListener('change', function() {
-            if (this.checked) {
-                categoryCheckboxes.forEach(cb => cb.checked = false);
-                document.getElementById('filter-category').value = '';
-                filterForm.submit();
-            }
-        });
-
-        // Обработка брендов
-        brandCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                updateBrandFilter();
-            });
-        });
-
-        brandAll.addEventListener('change', function() {
-            if (this.checked) {
-                brandCheckboxes.forEach(cb => cb.checked = false);
-                document.getElementById('filter-brand').value = '';
-                filterForm.submit();
-            }
-        });
-
-        function updateCategoryFilter() {
-            const selected = Array.from(categoryCheckboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
-
-            document.getElementById('filter-category').value = selected.join(',');
-            filterForm.submit();
-        }
-
-        function updateBrandFilter() {
-            const selected = Array.from(brandCheckboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
-
-            document.getElementById('filter-brand').value = selected.join(',');
-            filterForm.submit();
-        }
-
-        // Добавление в корзину через AJAX
-        document.querySelectorAll('.add-to-cart-form').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const formData = new FormData(this);
-
-                fetch(this.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Товар добавлен в корзину!');
-                            // Обновляем счетчик корзины
-                            updateCartCount();
-                        } else {
-                            alert(data.message || 'Ошибка при добавлении в корзину');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Ошибка при добавлении в корзину');
-                    });
-            });
-        });
-
-        function updateCartCount() {
-            fetch('{{ route("cart.count") }}')
-                .then(response => response.json())
-                .then(data => {
-                    const cartBadge = document.querySelector('.cart-count');
-                    if (cartBadge) {
-                        cartBadge.textContent = data.count;
-                        cartBadge.style.display = data.count > 0 ? 'inline' : 'none';
-                    }
-                });
-        }
-    });
-</script>
 </body>
 </html>

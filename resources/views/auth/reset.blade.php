@@ -6,9 +6,7 @@
     <title>Восстановление пароля</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     <script src="{{ asset('js/auth.js') }}"></script>
-    <style>
-        body { background-color: #f5f5f5; }
-    </style>
+
 </head>
 <body class="reset-page">
 <div class="auth-container">

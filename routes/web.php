@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Admin\AdminProductController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -105,4 +106,17 @@ Route::view('/delivery', 'pages.delivery')->name('delivery');
 Route::view('/privacy', 'pages.privacy')->name('privacy');
 Route::view('/blog', 'pages.blog')->name('blog');
 
+// Простые админские маршруты
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Дашборд
+    Route::get('/dashboard', function () {
+        // Простая проверка на админа
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            abort(403, 'Доступ запрещен');
+        }
+        return view('admin.dashboard');
+    })->name('dashboard');
 
+    // Управление товарами - указываем полный неймспейс
+    Route::resource('products', ProductController::class);
+});

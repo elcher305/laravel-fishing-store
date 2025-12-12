@@ -26,7 +26,6 @@
 
     @if($orders->isEmpty())
         <div class="empty-orders">
-            <div class="empty-icon">📦</div>
             <h2>У вас еще нет заказов</h2>
             <p>Сделайте свой первый заказ в нашем каталоге товаров</p>
             <a href="{{ route('products.index') }}" class="btn btn-primary" style="margin-top: 20px;">
