@@ -1,0 +1,148 @@
+/* Дополнительные стили для страниц профиля */
+.profile-nav {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.profile-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.profile-nav li {
+    display: inline-block;
+}
+
+.profile-nav a {
+    text-decoration: none;
+    color: #7f8c8d;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.profile-nav a:hover,
+.profile-nav a.active {
+    color: #3498db;
+    background-color: #f8f9fa;
+}
+
+.profile-nav a.active {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+/* Карточки статистики */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+/* Таблицы в профиле */
+.profile-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.profile-table th,
+.profile-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.profile-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Формы в профиле */
+.profile-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+/* Иконки в профиле */
+.icon-with-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-with-text i {
+    color: #3498db;
+    font-size: 18px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .profile-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-table {
+        font-size: 14px;
+    }
+
+    .profile-table th,
+    .profile-table td {
+        padding: 12px 15px;
+    }
+}

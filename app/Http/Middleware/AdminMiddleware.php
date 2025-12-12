@@ -5,17 +5,14 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return redirect()->route('auth.form')->with('error', 'Для доступа к этой странице необходимо войти в систему');
-        }
-
-        if (!Auth::user()->isAdmin()) {
-            abort(403, 'Доступ запрещен. Требуются права администратора.');
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
+            return redirect('/home')->with('error', 'У вас нет доступа к этой странице.');
         }
 
         return $next($request);

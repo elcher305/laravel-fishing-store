@@ -3,108 +3,66 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
-
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use  HasFactory;
+    use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
-        'password',
         'phone',
-        'avatar',
-        'role',
-        'is_active',
+        'password',
+        'role_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-        'is_active' => 'boolean',
-    ];
-
-    /**
-     * Scope для активных пользователей
-     */
-    public function scopeActive($query)
+    protected function casts(): array
     {
-        return $query->where('is_active', true);
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 
-    /**
-     * Scope для администраторов
-     */
-    public function scopeAdmins($query)
+    public function role(): BelongsTo
     {
-        return $query->where('role', 'admin');
+        return $this->belongsTo(Role::class);
     }
 
-    /**
-     * Проверка, является ли пользователь администратором
-     */
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role_id === 1;
     }
 
-    /**
-     * Мутатор для приведения email к нижнему регистру
-     */
-    public function setEmailAttribute($value)
+    public function isUser(): bool
     {
-        $this->attributes['email'] = strtolower($value);
+        return $this->role_id === 2;
     }
 
-    /**
-     * Мутатор для хеширования пароля
-     */
-    public function setPasswordAttribute($value)
+    // Валидационные правила для профиля
+    public static function profileRules($userId = null)
     {
-        $this->attributes['password'] = bcrypt($value);
+        return [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
+            'phone' => 'nullable|string|max:20|unique:users,phone,' . $userId,
+        ];
     }
 
-    /**
-     * Аксессор для полного URL аватара
-     */
-    public function getAvatarUrlAttribute()
+    // Валидационные правила для смены пароля
+    public static function passwordRules()
     {
-        if ($this->avatar) {
-            return asset('storage/' . $this->avatar);
-        }
-
-        // Генерация граватара
-        $hash = md5(strtolower(trim($this->email)));
-        return "https://www.gravatar.com/avatar/{$hash}?d=mp";
-    }
-
-    // Убедитесь, что это отношение существует
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
+        return [
+            'current_password' => 'required|current_password',
+            'password' => 'required|string|min:8|confirmed',
+        ];
     }
 }

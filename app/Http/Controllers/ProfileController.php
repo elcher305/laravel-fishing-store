@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
+    // УБИРАЕМ конструктор с middleware
+
     // Показать профиль
     public function show()
     {
@@ -16,7 +19,7 @@ class ProfileController extends Controller
         return view('profile.show', compact('user'));
     }
 
-    // Показать форму редактирования профиля
+    // Показать форму редактирования
     public function edit()
     {
         $user = Auth::user();
@@ -31,8 +34,7 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
+            'phone' => 'nullable|string|max:20|unique:users,phone,' . $user->id,
         ]);
 
         if ($validator->fails()) {
@@ -41,29 +43,24 @@ class ProfileController extends Controller
                 ->withInput();
         }
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ]);
+        $user->update($request->only('name', 'email', 'phone'));
 
         return redirect()->route('profile.show')
             ->with('success', 'Профиль успешно обновлен!');
     }
 
-    // Показать форму изменения пароля
-    public function showChangePassword()
+    // Показать форму смены пароля
+    public function showChangePasswordForm()
     {
         return view('profile.change-password');
     }
 
-    // Изменить пароль
+    // Сменить пароль
     public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed',
+            'current_password' => 'required|current_password',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         if ($validator->fails()) {
@@ -73,17 +70,8 @@ class ProfileController extends Controller
         }
 
         $user = Auth::user();
-
-        // Проверка текущего пароля
-        if (!Hash::check($request->current_password, $user->password)) {
-            return redirect()->back()
-                ->withErrors(['current_password' => 'Текущий пароль неверен.'])
-                ->withInput();
-        }
-
-        // Обновление пароля
         $user->update([
-            'password' => Hash::make($request->new_password),
+            'password' => Hash::make($request->password)
         ]);
 
         return redirect()->route('profile.show')
