@@ -15,20 +15,11 @@
             <a href="{{ route('profile.show') }}" class="btn btn-secondary">Профиль</a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" style="
-                        padding: 8px 16px;
-                        background: #f8f9fa;
-                        color: #e74c3c;
-                        border: 1px solid #ddd;
-                        border-radius: 6px;
-                        cursor: pointer;
-                    ">Выйти</button>
             </form>
         </div>
     </div>
 
     <div class="nav">
-        <a href="{{ route('profile.show') }}">Мой профиль</a>
         <a href="{{ route('profile.edit') }}">Редактировать профиль</a>
         <a href="{{ route('profile.change-password') }}">Сменить пароль</a>
         @if(Auth::user()->isAdmin())

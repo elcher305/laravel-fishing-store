@@ -35,7 +35,6 @@
             <a class="icons-menu">
                 <img src="img/Heart-blue.svg" alt="">
 
-
             </a>
         </form>
 

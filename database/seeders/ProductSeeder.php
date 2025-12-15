@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use Illuminate\Database\Seeder;
+use App\Models\Product;
 
 class ProductSeeder extends Seeder
 {
@@ -11,81 +11,42 @@ class ProductSeeder extends Seeder
     {
         $products = [
             [
-                'name' => 'Прикормка DUNAEV BLACK Series 1 ит BREAM',
-                'description' => 'Серия Black, для леща, вес: 500г',
-                'price' => 230.00,
+                'name' => 'Кольцо заводное Dunaev size #7',
+                'price' => 100,
                 'stock' => 50,
-                'category' => 'Прикормка',
-                'brand' => 'DUNAEV',
-                'weight' => 500,
+                'badge' => 'ЗАВОДНОЕ',
+                'sizes' => json_encode(['3.5мм', '4мм', '5мм', '6мм', '7мм']),
+                'category' => 'Аксессуары'
             ],
             [
                 'name' => 'Шнур Дунаев Braid PE X4 150 м.',
-                'description' => 'Плетеный шнур для спиннинга',
-                'price' => 600.00,
-                'stock' => 25,
-                'category' => 'Шнур',
-                'brand' => 'DUNAEV',
-                'weight' => 150,
+                'price' => 600,
+                'stock' => 20,
+                'badge' => 'ШНУР',
+                'sizes' => json_encode(['0.38мм', '0.20мм', '0.12мм', '0.08мм']),
+                'category' => 'Спиннинг'
             ],
             [
                 'name' => 'Премиум крючок Дунаев',
-                'description' => 'Качественный крючок для рыбы',
-                'price' => 145.00,
+                'price' => 145,
+                'stock' => 0,
+                'badge' => 'ПРЕМИУМ',
+                'sizes' => json_encode(['0.41мм', '0.33мм', '0.30мм', '0.28мм']),
+                'category' => 'Крючки'
+            ],
+            [
+                'name' => 'Прикормка DUNAEV BLACK',
+                'price' => 268,
                 'stock' => 100,
-                'category' => 'Крючки',
-                'brand' => 'DUNAEV',
-                'weight' => 10,
+                'badge' => 'ПРИКОРМКА',
+                'sizes' => json_encode(['0.41мм', '0.33мм', '0.30мм', '0.28мм']),
+                'category' => 'Приманки'
             ],
-            [
-                'name' => 'Кольцо заводное Dunaev size #7',
-                'description' => 'Заводное кольцо для снастей',
-                'price' => 100.00,
-                'stock' => 75,
-                'category' => 'Аксессуары',
-                'brand' => 'DUNAEV',
-                'weight' => 5,
-            ],
-            [
-                'name' => 'Спиннинг Shimano Catana',
-                'description' => 'Универсальный спиннинг',
-                'price' => 3500.00,
-                'stock' => 10,
-                'category' => 'Спиннинг',
-                'brand' => 'Shimano',
-                'weight' => 200,
-            ],
-            [
-                'name' => 'Катушка Daiwa Regal',
-                'description' => 'Безынерционная катушка',
-                'price' => 2800.00,
-                'stock' => 15,
-                'category' => 'Катушки',
-                'brand' => 'Daiwa',
-                'weight' => 300,
-            ],
-            [
-                'name' => 'Поплавок для фидера',
-                'description' => 'Чувствительный поплавок',
-                'price' => 85.00,
-                'stock' => 60,
-                'category' => 'Поплавок',
-                'brand' => 'Sensas',
-                'weight' => 15,
-            ],
-            [
-                'name' => 'Зимняя удочка',
-                'description' => 'Удочка для зимней рыбалки',
-                'price' => 1200.00,
-                'stock' => 8,
-                'category' => 'Зимняя рыбалка',
-                'brand' => 'Salmo',
-                'weight' => 250,
-            ],
+            // Добавьте больше товаров по аналогии
         ];
 
-        foreach ($products as $product) {
-            Product::create($product);
+        foreach ($products as $productData) {
+            Product::create($productData);
         }
     }
 }

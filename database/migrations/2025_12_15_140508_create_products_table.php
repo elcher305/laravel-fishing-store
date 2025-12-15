@@ -1,10 +1,11 @@
 <?php
 
+// database/migrations/2024_01_01_000000_create_products_table.php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateProductsTable extends Migration
 {
     public function up()
     {
@@ -16,9 +17,8 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->string('image')->nullable();
             $table->string('category')->nullable();
-            $table->string('brand')->nullable();
-            $table->json('specifications')->nullable(); // Характеристики в JSON
-            $table->boolean('is_active')->default(true);
+            $table->string('badge')->nullable();
+            $table->json('sizes')->nullable();
             $table->timestamps();
         });
     }
@@ -27,4 +27,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('products');
     }
-};
+}

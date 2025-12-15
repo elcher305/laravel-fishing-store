@@ -1,106 +1,134 @@
+<!-- resources/views/cart/index.blade.php -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Корзина товаров - {{ config('app.name') }}</title>
-
-    <link rel="stylesheet" href="{{ asset('css/style-basket.css') }}">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="{{ asset('css/style-basket.css')}}">
 </head>
 <body>
-
-
 @if(session('success'))
-    <div class="container">
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
 @endif
 
 @if(session('error'))
-    <div class="container">
-        <div class="alert alert-error">
-            {{ session('error') }}
-        </div>
+    <div class="alert alert-danger">
+        {{ session('error') }}
     </div>
 @endif
 
-@if($cartItems->isEmpty())
-    <div class="container">
-        <div class="empty-cart">
-            <div class="empty-cart-icon">🛒</div>
-            <h2>Ваша корзина пуста</h2>
-            <p>Добавьте товары из каталога, чтобы сделать заказ</p>
-            <a href="{{ route('products.index') }}" class="btn btn-primary">Перейти в каталог</a>
-        </div>
+<div class="container">
+    <div class="header">
+        Корзина
     </div>
-@else
-    <div class="container">
-        <div class="header">
-            <b class="fas fa-shopping-cart">Корзина</b>
-        </div>
 
+    @if($cartItems->isEmpty())
+        <div class="empty-cart">
+            <h3>Ваша корзина пуста</h3>
+            <p>Добавьте товары из каталога, чтобы продолжить покупки</p>
+            <a href="{{ route('catalog.index') }}" class="back-to-shop">Вернуться к покупкам</a>
+        </div>
+    @else
         @foreach($cartItems as $item)
-            <div class="cart-item" data-item-id="{{ $item->id }}">
-                <div class="item-info">
-                    <div class="item-title">{{ $item->product->name }}</div>
-                    <div class="item-subtitle">{{ $item->product->brand ?: 'Без бренда' }}</div>
-                    <div class="item-details">
-                        <div class="item-price">{{ number_format($item->product->price, 0, ',', ' ') }} ₽</div>
-                        <div class="quantity-control">
-                            <button class="quantity-btn minus-btn" data-action="decrease">
-                                <img src="{{ asset('img/fi-rr-minus.svg') }}" alt="Уменьшить">
-                            </button>
-                            <input type="text" class="quantity-input" value="{{ $item->quantity }}" readonly>
-                            <button class="quantity-btn plus-btn" data-action="increase">
-                                <img src="{{ asset('img/fi-rr-plus.svg') }}" alt="Увеличить">
-                            </button>
-                        </div>
-                        <div class="item-total" style="margin-left: 20px; font-weight: bold;">
-                            {{ number_format($item->product->price * $item->quantity, 0, ',', ' ') }} ₽
+            <div class="cart-item">
+                <div class="item-details">
+                    <div class="item-info-with-image">
+                        @if($item->product->image)
+                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                 alt="{{ $item->product->name }}"
+                                 class="item-image">
+                        @else
+
+                        @endif
+
+                        <div class="item-info">
+                            <div class="item-title">{{ $item->product->name }}</div>
+
+                            @if($item->selected_size)
+                                <div class="item-size">Размер: {{ $item->selected_size }}</div>
+                            @endif
+
+                            <div class="item-price">{{ $item->product->price * $item->quantity }} руб.</div>
+                            <div class="item-subtitle">{{ $item->product->price }} руб. × {{ $item->quantity }} шт.</div>
                         </div>
                     </div>
-                </div>
-                <form action="{{ route('cart.destroy', $item) }}" method="POST" class="delete-form">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="delete-btn">
-                        <b class="fas fa-trash-alt">Удалить</b>
-                    </button>
-                </form>
-            </div>
-        @endforeach
 
-        <div class="divider"></div>
+                    <div class="quantity-control">
+                        <form action="{{ route('cart.update', $item) }}" method="POST"
+                              style="display: flex; align-items: center;">
+                            @csrf
+                            @method('PUT')
+
+                            <button type="button" class="quantity-btn minus"
+                                    onclick="this.parentNode.querySelector('input').stepDown(); this.parentNode.submit();">-</button>
+
+                            <input type="number"
+                                   name="quantity"
+                                   value="{{ $item->quantity }}"
+                                   min="1"
+                                   max="{{ $item->product->stock }}"
+                                   class="quantity-input"
+                                   onchange="this.parentNode.submit()">
+
+                            <button type="button" class="quantity-btn plus"
+                                    onclick="this.parentNode.querySelector('input').stepUp(); this.parentNode.submit();">+</button>
+                        </form>
+                    </div>
+
+                    <form action="{{ route('cart.destroy', $item) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="delete-btn">
+                            Удалить
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="divider"></div>
+        @endforeach
 
         <div class="summary">
             <div class="total">
-                <span class="total-label">Стоимость товаров</span>
-                <span class="total-price">{{ number_format($total, 0, ',', ' ') }} ₽</span>
-            </div>
-
-            <a href="{{ route('orders.checkout') }}" id="btn-summary-pay" class="btn btn-primary">Оформить заказ</a>
-
-            <div class="cart-actions">
-                <a href="{{ route('products.index') }}" class="btn btn-secondary">Продолжить покупки</a>
-                <form action="{{ route('cart.clear') }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Очистить всю корзину?')">Очистить корзину</button>
-                </form>
+                <div class="total-label">Итого к оплате</div>
+                <div class="total-price">{{ $total }} руб.</div>
             </div>
 
             <div class="conditions">
-                Оформляя заказ, вы подтверждаете свое совершеннолетие и соглашаетесь с нашими условиями обработки персональных данных.
+                <strong>Условия заказа:</strong><br>
+                • Минимальная сумма заказа: 500 руб.<br>
+                • Доставка осуществляется в течение 1-3 рабочих дней<br>
+                • Возврат товара возможен в течение 30 дней<br>
+                • Оплата при получении или онлайн
+            </div>
+
+            <div class="cart-actions">
+                @auth
+                    <button id="btn-summary-pay" class="checkout-btn"
+                            onclick="window.location.href='{{ route('orders.checkout') }}'">
+                        Подтвердить
+                    </button>
+                @else
+                    <div >
+                        <p>
+                            Для оформления заказа необходимо войти в систему
+                        </p>
+                        <button class="checkout-btn"
+                                onclick="window.location.href='{{ route('login') }}'">
+                            Войти и оформить заказ
+                        </button>
+                    </div>
+                @endauth
             </div>
         </div>
-    </div>
+    @endif
 
     <div class="footer-note">
-        <p>Все цены указаны в рублях. Товары в корзине сохраняются 30 дней.</p>
+        © 2024 Магазин рыболовных товаров. Все права защищены.
     </div>
-@endif
+</div>
 
 </body>
 </html>

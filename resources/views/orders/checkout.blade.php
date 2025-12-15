@@ -1,238 +1,221 @@
+<!-- resources/views/orders/checkout.blade.php -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оформление заказа - {{ config('app.name') }}</title>
-    <link rel="stylesheet" href="{{ asset('css/orders.css') }}">
+    <title>Оформление заказа</title>
+    <link rel="stylesheet" href="{{ asset('css/style-checkout.css') }}">
+    <script src="../js/checkout.js"></script>
 </head>
 <body>
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 
 <div class="checkout-container">
-    <h1 style="margin-bottom: 30px;">Оформление заказа</h1>
-
-    @if(session('error'))
-        <div class="alert alert-error">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <form action="{{ route('orders.store') }}" method="POST" id="checkout-form">
-        @csrf
-
-        <div class="checkout-grid">
-            <div>
-                <!-- Выбор адреса -->
-                <div class="checkout-section">
-                    <h2 class="section-title">Адрес доставки</h2>
-
-                    @if($addresses->isEmpty())
-                        <div class="alert alert-error">
-                            У вас нет сохраненных адресов. <a href="{{ route('addresses.create') }}">Добавить адрес</a>
-                        </div>
-                    @else
-                        <div class="address-list">
-                            @foreach($addresses as $address)
-                                <label class="address-item {{ $address->is_default ? 'selected' : '' }}">
-                                    <input type="radio" name="address_id" value="{{ $address->id }}"
-                                           class="radio-input"
-                                           {{ $address->is_default ? 'checked' : '' }}
-                                           required>
-                                    <div class="address-title">{{ $address->title }}</div>
-                                    <div class="address-details">{{ $address->full_address }}</div>
-                                    <div class="address-details">Телефон: {{ $address->phone }}</div>
-                                </label>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    <a href="{{ route('addresses.create') }}" class="new-address-btn" style="margin-top: 15px;">
-                        + Добавить новый адрес
-                    </a>
-                </div>
-
-                <!-- Способ доставки -->
-                <div class="checkout-section">
-                    <h2 class="section-title">Способ доставки</h2>
-
-                    <div class="method-options">
-                        <label class="method-option selected">
-                            <input type="radio" name="delivery_method" value="courier"
-                                   class="radio-input" checked>
-                            <div class="method-name">Курьер</div>
-                            <div class="method-desc">1-3 дня • 300 ₽</div>
-                        </label>
-
-                        <label class="method-option">
-                            <input type="radio" name="delivery_method" value="post"
-                                   class="radio-input">
-
-                            <div class="method-name">Почта</div>
-                            <div class="method-desc">3-7 дней • 200 ₽</div>
-                        </label>
-
-                        <label class="method-option">
-                            <input type="radio" name="delivery_method" value="pickup"
-                                   class="radio-input">
-                            <div class="method-name">Самовывоз</div>
-                            <div class="method-desc">Бесплатно • Томск</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Способ оплаты -->
-                <div class="checkout-section">
-                    <h2 class="section-title">Способ оплаты</h2>
-
-                    <div class="method-options">
-                        <label class="method-option selected">
-                            <input type="radio" name="payment_method" value="card"
-                                   class="radio-input" checked>
-                            <div class="method-icon"></div>
-                            <div class="method-name">Карта онлайн</div>
-                            <div class="method-desc">Безопасно</div>
-                        </label>
-
-                        <label class="method-option">
-                            <input type="radio" name="payment_method" value="cash"
-                                   class="radio-input">
-                            <div class="method-name">Наличные</div>
-                            <div class="method-desc">При получении</div>
-                        </label>
-
-                        <label class="method-option">
-                            <input type="radio" name="payment_method" value="online"
-                                   class="radio-input">
-                            <div class="method-name">Электронные</div>
-                            <div class="method-desc">Qiwi, YooMoney</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Комментарий к заказу -->
-                <div class="checkout-section">
-                    <h2 class="section-title">Комментарий к заказу</h2>
-                    <textarea name="notes" class="notes-textarea"
-                              placeholder="Дополнительные пожелания к заказу..."></textarea>
-                </div>
+    <div class="checkout-column">
+        <div class="container">
+            <div class="header">
+                Оформление заказа
             </div>
 
-            <!-- Сводка заказа -->
-            <div class="order-summary">
-                <div class="checkout-section">
-                    <h2 class="section-title">Ваш заказ</h2>
+            <div >
+                <form action="{{ route('orders.store') }}" method="POST" id="checkout-form">
+                    @csrf
 
-                    <div>
-                        @foreach($cartItems as $item)
-                            <div class="cart-item-checkout">
-                                <div class="cart-item-name">{{ $item->product->name }}</div>
-                                <div class="cart-item-quantity">×{{ $item->quantity }}</div>
-                                <div class="cart-item-price">{{ number_format($item->product->price * $item->quantity, 0, ',', ' ') }} ₽</div>
-                            </div>
-                        @endforeach
+                    <h3 class="section-title">Контактная информация</h3>
+
+                    <div class="form-group">
+                        <label for="customer_name" class="form-label">
+                            ФИО <span class="required">*</span>
+                        </label>
+                        <input type="text"
+                               id="customer_name"
+                               name="customer_name"
+                               class="form-input"
+                               value="{{ old('customer_name', auth()->user()->name ?? '') }}"
+                               required
+                               placeholder="ФИО">
                     </div>
 
-                    <div style="margin-top: 20px;">
-                        <div class="summary-item">
-                            <span>Товары:</span>
-                            <span>{{ number_format($subtotal, 0, ',', ' ') }} ₽</span>
-                        </div>
-
-                        <div class="summary-item">
-                            <span>Доставка:</span>
-                            <span id="shipping-cost">{{ number_format($shippingCost, 0, ',', ' ') }} ₽</span>
-                        </div>
-
-                        <div class="summary-total summary-item">
-                            <span>Итого:</span>
-                            <span id="total-price">{{ number_format($total, 0, ',', ' ') }} ₽</span>
-                        </div>
+                    <div class="form-group">
+                        <label for="customer_email" class="form-label">
+                            Email <span class="required">*</span>
+                        </label>
+                        <input type="email"
+                               id="customer_email"
+                               name="customer_email"
+                               class="form-input"
+                               value="{{ old('customer_email', auth()->user()->email ?? '') }}"
+                               required
+                               placeholder="Email">
                     </div>
 
-                    <button type="submit" class="checkout-btn"
-                        {{ $addresses->isEmpty() ? 'disabled' : '' }}>
+                    <div class="form-group">
+                        <label for="customer_phone" class="form-label">
+                            Телефон <span class="required">*</span>
+                        </label>
+                        <input type="tel"
+                               id="customer_phone"
+                               name="customer_phone"
+                               class="form-input"
+                               value="{{ old('customer_phone') }}"
+                               required
+                               placeholder="+7 (999) 123-45-67">
+                    </div>
+
+                    <h3 class="section-title">Адрес доставки</h3>
+
+                    <div class="form-group">
+                        <label for="shipping_city" class="form-label">
+                            Город <span class="required">*</span>
+                        </label>
+                        <input type="text"
+                               id="shipping_city"
+                               name="shipping_city"
+                               class="form-input"
+                               value="{{ old('shipping_city') }}"
+                               required
+                               placeholder="Город">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shipping_address" class="form-label">
+                            Адрес <span class="required">*</span>
+                        </label>
+                        <textarea id="shipping_address"
+                                  name="shipping_address"
+                                  class="form-input"
+                                  required
+                                  placeholder="ул. Ленина, д. 10, кв. 5">{{ old('shipping_address') }}</textarea>
+                    </div>
+
+                    <h3 class="section-title">Способ доставки</h3>
+
+                    <div class="radio-group shipping-methods">
+                        <label class="radio-option">
+                            <input type="radio"
+                                   name="shipping_method"
+                                   value="pickup"
+                                   {{ old('shipping_method', 'pickup') == 'pickup' ? 'checked' : '' }}
+                                   required>
+                            <div class="option-label">Самовывоз</div>
+                            <div class="option-price">Бесплатно</div>
+                        </label>
+
+                        <label class="radio-option">
+                            <input type="radio"
+                                   name="shipping_method"
+                                   value="courier"
+                                {{ old('shipping_method') == 'courier' ? 'checked' : '' }}>
+                            <div class="option-label">Курьерская доставка</div>
+                            <div class="option-price">300 руб.</div>
+                        </label>
+
+                        <label class="radio-option">
+                            <input type="radio"
+                                   name="shipping_method"
+                                   value="post"
+                                {{ old('shipping_method') == 'post' ? 'checked' : '' }}>
+                            <div class="option-label">Почта России</div>
+                            <div class="option-price">200 руб.</div>
+                        </label>
+                    </div>
+
+                    <h3 class="section-title">Способ оплаты</h3>
+
+                    <div class="radio-group payment-methods">
+                        <label class="radio-option">
+                            <input type="radio"
+                                   name="payment_method"
+                                   value="cash"
+                                   {{ old('payment_method', 'cash') == 'cash' ? 'checked' : '' }}
+                                   required>
+                            <div class="option-label">Наличные при получении</div>
+                        </label>
+
+                        <label class="radio-option">
+                            <input type="radio"
+                                   name="payment_method"
+                                   value="card"
+                                {{ old('payment_method') == 'card' ? 'checked' : '' }}>
+                            <div class="option-label">Картой при получении</div>
+                        </label>
+
+                        <label class="radio-option">
+                            <input type="radio"
+                                   name="payment_method"
+                                   value="online"
+                                {{ old('payment_method') == 'online' ? 'checked' : '' }}>
+                            <div class="option-label">Онлайн оплата картой</div>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes" class="form-label">Комментарий к заказу</label>
+                        <textarea id="notes"
+                                  name="notes"
+                                  class="form-input"
+                                  placeholder="Дополнительные пожелания, время доставки и т.д.">{{ old('notes') }}</textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
                         Подтвердить заказ
                     </button>
 
-                    <div class="conditions" style="margin-top: 20px; font-size: 12px; color: #666;">
-                        Оформляя заказ, вы подтверждаете свое совершеннолетие и соглашаетесь с нашими условиями обработки персональных данных.
-                    </div>
-                </div>
+                    <a href="{{ route('cart.index') }}" class="back-btn">
+                        ← Вернуться в корзину
+                    </a>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
+
+    <div class="checkout-column">
+        <div class="container">
+            <div class="header">
+                Ваш заказ
+            </div>
+
+            <div style="padding: 25px;">
+                <div class="order-summary">
+                    @foreach($cartItems as $item)
+                        <div class="order-item">
+                            <div>
+                                <div class="item-name">{{ $item->product->name }}</div>
+                                @if($item->selected_size)
+                                    <div class="item-details">Размер: {{ $item->selected_size }}</div>
+                                @endif
+                            </div>
+                            <div class="item-total">
+                                <div class="item-quantity">{{ $item->quantity }} шт. × {{ $item->product->price }} руб.</div>
+                                <div class="item-price">{{ $item->product->price * $item->quantity }} руб.</div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <div class="order-total">
+                        <div class="total-label">Итого к оплате</div>
+                        <div class="total-price">{{ $total }} руб.</div>
+                    </div>
+                </div>
+
+                <div class="conditions">
+                    <strong>Условия оформления заказа:</strong><br>
+                    • Заказ будет обработан в течение 1 часа в рабочее время<br>
+                    • С вами свяжется менеджер для подтверждения заказа<br>
+                    • Отслеживание статуса заказа в личном кабинете<br>
+                    • Возврат товара в течение 14 дней<br>
+                    • Конфиденциальность данных гарантируется
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 
-@include('partials.footer')
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Обновление стоимости доставки при изменении способа
-        const deliveryInputs = document.querySelectorAll('input[name="delivery_method"]');
-        const shippingCostEl = document.getElementById('shipping-cost');
-        const totalPriceEl = document.getElementById('total-price');
-        const subtotal = {{ $subtotal }};
-
-        deliveryInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                const shippingCost = calculateShippingCost(this.value, subtotal);
-                const total = subtotal + shippingCost;
-
-                shippingCostEl.textContent = shippingCost.toLocaleString('ru-RU') + ' ₽';
-                totalPriceEl.textContent = total.toLocaleString('ru-RU') + ' ₽';
-            });
-        });
-
-        // Обновление кнопки при выборе адреса
-        const addressInputs = document.querySelectorAll('input[name="address_id"]');
-        const checkoutBtn = document.querySelector('.checkout-btn');
-
-        addressInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                checkoutBtn.disabled = false;
-            });
-        });
-
-        // Выбор адреса/способа оплаты
-        document.querySelectorAll('.address-item, .method-option').forEach(item => {
-            item.addEventListener('click', function() {
-                const radio = this.querySelector('.radio-input');
-                if (radio) {
-                    radio.checked = true;
-
-                    // Обновляем стили выбранного элемента
-                    if (this.classList.contains('address-item')) {
-                        document.querySelectorAll('.address-item').forEach(addr => {
-                            addr.classList.remove('selected');
-                        });
-                    } else if (this.classList.contains('method-option')) {
-                        const name = radio.name;
-                        document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
-                            inp.closest('.method-option').classList.remove('selected');
-                        });
-                    }
-
-                    this.classList.add('selected');
-
-                    // Если это способ доставки, пересчитываем стоимость
-                    if (radio.name === 'delivery_method') {
-                        const shippingCost = calculateShippingCost(radio.value, subtotal);
-                        const total = subtotal + shippingCost;
-
-                        shippingCostEl.textContent = shippingCost.toLocaleString('ru-RU') + ' ₽';
-                        totalPriceEl.textContent = total.toLocaleString('ru-RU') + ' ₽';
-                    }
-                }
-            });
-        });
-
-        function calculateShippingCost(method, subtotal) {
-            if (method === 'pickup') return 0;
-            if (subtotal >= 5000) return 0;
-
-            return method === 'courier' ? 300 : 200;
-        }
-    });
-</script>
 </body>
 </html>

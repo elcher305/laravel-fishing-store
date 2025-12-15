@@ -10,7 +10,7 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
-    // УБИРАЕМ конструктор с middleware
+
 
     // Показать профиль
     public function show()

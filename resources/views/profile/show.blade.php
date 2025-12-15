@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мой профиль</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 </head>
 <body>
 <div class="profile-container">
@@ -24,16 +23,9 @@
     <div class="profile-card">
         <div class="profile-header">
             <h1 class="profile-title">Мой профиль</h1>
-            <span class="role-badge" style="
-                    background: {{ Auth::user()->isAdmin() ? '#3498db' : '#2ecc71' }};
-                    color: white;
-                    padding: 6px 12px;
-                    border-radius: 20px;
-                    font-size: 14px;
-                    font-weight: 500;
-                ">
+            <span class="role-badge" >
                     {{ Auth::user()->isAdmin() ? 'Администратор' : 'Пользователь' }}
-                </span>
+            </span>
         </div>
 
         <div class="profile-info">

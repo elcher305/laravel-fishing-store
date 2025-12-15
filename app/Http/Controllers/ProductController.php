@@ -72,21 +72,35 @@ class ProductController extends Controller
         return view('products.show', compact('product', 'reviews', 'similarProducts', 'canReview'));
     }
 
-    // Быстрый поиск товаров (для AJAX)
-    public function search(Request $request)
-    {
-        $query = $request->get('q');
-
-        $products = Product::where('name', 'like', "%{$query}%")
-            ->orWhere('description', 'like', "%{$query}%")
-            ->limit(10)
-            ->get(['id', 'name', 'price', 'image']);
-
-        return response()->json($products);
-    }
 
     public function create()
     {
-        return view('admin.products.create');
+        return view('admin.products.create'); // или ваша форма
+    }
+
+    // Сохраняем новый продукт
+    public function store(Request $request)
+    {
+        // Валидация данных
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Обработка загрузки изображения (если есть)
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image'] = $imagePath;
+        }
+
+        // Создаем продукт
+        Product::create($validated);
+
+        // Редирект с сообщением об успехе
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Продукт успешно создан!');
     }
 }
