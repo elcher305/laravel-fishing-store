@@ -7,11 +7,27 @@ use Illuminate\Support\Facades\DB;
 
 class RoleSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        DB::table('roles')->insert([
-            ['name' => 'admin', 'description' => 'Administrator'],
-            ['name' => 'user', 'description' => 'Regular user'],
-        ]);
+        $roles = [
+            [
+                'name' => 'admin',
+                'description' => 'Administrator',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'user',
+                'description' => 'Regular user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
+
+        foreach ($roles as $role) {
+            // Используем insertOrIgnore для игнорирования дубликатов
+            DB::table('roles')->insertOrIgnore($role);
+
+        }
     }
 }

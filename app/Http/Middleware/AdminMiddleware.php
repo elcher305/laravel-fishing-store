@@ -11,8 +11,12 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || !Auth::user()->isAdmin()) {
-            return redirect('/home')->with('error', 'У вас нет доступа к этой странице.');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Пожалуйста, войдите в систему');
+        }
+
+        if (!Auth::user()->is_admin) {
+            return redirect()->route('dashboard')->with('error', 'У вас нет прав доступа к админ-панели');
         }
 
         return $next($request);

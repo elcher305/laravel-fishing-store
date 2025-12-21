@@ -1,181 +1,106 @@
 @extends('admin.layouts.app')
 
-@section('title', $product->name)
+@section('title', 'Управление товарами')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3">
-            <i class="fas fa-box"></i> {{ $product->name }}
+            <i class="fas fa-box"></i> Управление товарами
         </h1>
-        <div class="btn-group">
-            <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-primary">
-                <i class="fas fa-edit"></i> Редактировать
-            </a>
-            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Назад
-            </a>
-        </div>
+        <a href="{{ route('admin.products.create') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Добавить товар
+        </a>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Информация о товаре</h5>
+    <div class="card">
+        <div class="card-body">
+            @if($products->isEmpty())
+                <div class="text-center py-5">
+                    <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                    <h4>Товаров пока нет</h4>
+                    <p class="text-muted">Добавьте первый товар</p>
+                    <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Добавить товар
+                    </a>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-                                 class="img-fluid rounded mb-3">
-                        </div>
-
-                        <div class="col-md-8">
-                            <table class="table table-sm">
-                                <tr>
-                                    <th width="30%">ID:</th>
-                                    <td>{{ $product->id }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Название:</th>
-                                    <td>{{ $product->name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Категория:</th>
-                                    <td>{{ $product->category ?? '—' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Бренд:</th>
-                                    <td>{{ $product->brand ?? '—' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Цена:</th>
-                                    <td><strong>{{ number_format($product->price, 0, ',', ' ') }} ₽</strong></td>
-                                </tr>
-                                <tr>
-                                    <th>Наличие:</th>
-                                    <td>
+            @else
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th width="60">#</th>
+                            <th width="100">Фото</th>
+                            <th>Название</th>
+                            <th>Цена</th>
+                            <th>Наличие</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($products as $product)
+                            <tr>
+                                <td>{{ $product->id }}</td>
+                                <td>
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                         class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                                </td>
+                                <td>
+                                    <strong>{{ $product->name }}</strong>
+                                    <div class="text-muted small">
+                                        {{ $product->category }}
+                                        @if($product->brand)
+                                            • {{ $product->brand }}
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>{{ number_format($product->price, 0, ',', ' ') }} ₽</strong>
+                                </td>
+                                <td>
                                     <span class="badge {{ $product->stock > 0 ? 'bg-success' : 'bg-danger' }}">
                                         {{ $product->stock }} шт.
                                     </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Статус:</th>
-                                    <td>
+                                </td>
+                                <td>
                                     <span class="badge bg-{{ $product->status_class }}">
                                         {{ $product->status }}
                                     </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Создан:</th>
-                                    <td>{{ $product->created_at->format('d.m.Y H:i') }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Обновлен:</th>
-                                    <td>{{ $product->updated_at->format('d.m.Y H:i') }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ route('admin.products.show', $product) }}"
+                                           class="btn btn-info" title="Просмотр">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('admin.products.edit', $product) }}"
+                                           class="btn btn-primary" title="Редактировать">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="confirmDelete({{ $product->id }})" title="Удалить">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
 
-                    <!-- Описание -->
-                    @if($product->description)
-                        <div class="mt-4">
-                            <h6>Описание</h6>
-                            <div class="border rounded p-3 bg-light">
-                                {!! nl2br(e($product->description)) !!}
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Характеристики -->
-                    @if(!empty($product->specs_array))
-                        <div class="mt-4">
-                            <h6>Характеристики</h6>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered">
-                                    <tbody>
-                                    @foreach($product->specs_array as $key => $value)
-                                        <tr>
-                                            <th width="30%">{{ $key }}</th>
-                                            <td>{{ $value }}</td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    @endif
+                                    <form id="delete-form-{{ $product->id }}"
+                                          action="{{ route('admin.products.destroy', $product) }}"
+                                          method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </div>
 
-        <!-- Боковая панель -->
-        <div class="col-md-4">
-            <!-- Быстрые действия -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Быстрые действия</h5>
+                <!-- Пагинация -->
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $products->links() }}
                 </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a href="{{ route('products.show', $product) }}" target="_blank"
-                           class="btn btn-outline-primary">
-                            <i class="fas fa-external-link-alt"></i> Посмотреть на сайте
-                        </a>
-
-                        <button type="button" class="btn btn-outline-danger"
-                                onclick="confirmDelete()">
-                            <i class="fas fa-trash"></i> Удалить товар
-                        </button>
-
-                        <form id="delete-form" action="{{ route('admin.products.destroy', $product) }}"
-                              method="POST" style="display: none;">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Статистика -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Статистика</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item d-flex justify-content-between">
-                            <span>Просмотры:</span>
-                            <span class="badge bg-secondary">0</span>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between">
-                            <span>Продажи:</span>
-                            <span class="badge bg-success">0</span>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between">
-                            <span>В корзинах:</span>
-                            <span class="badge bg-warning">0</span>
-                        </div>
-                        <div class="list-group-item d-flex justify-content-between">
-                            <span>В избранном:</span>
-                            <span class="badge bg-info">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        function confirmDelete() {
-            if (confirm('Вы уверены, что хотите удалить этот товар?')) {
-                document.getElementById('delete-form').submit();
-            }
-        }
-    </script>
-@endpush

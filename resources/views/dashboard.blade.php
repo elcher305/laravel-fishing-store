@@ -14,8 +14,11 @@
             <span class="user-name">{{ Auth::user()->email }}</span>
             <a href="{{ route('profile.show') }}" class="btn btn-secondary">Профиль</a>
             <form method="POST" action="{{ route('logout') }}">
-                @csrf
+                <button type="submit" class="nav-link btn btn-link text-start w-100">
+                    <a class="fas fa-sign-out-alt"></a> Выйти
+                </button>
             </form>
+
         </div>
     </div>
 
@@ -29,7 +32,8 @@
 
     <div class="content">
         <h2>Панель управления</h2>
-        <p>Вы успешно авторизованы в системе.</p>
+        <p>Вы успешно авторизованы в системе администрирования.</p>
+
 
         <div style="margin-top: 30px;">
             <h3>Быстрые действия:</h3>
@@ -45,12 +49,43 @@
                 <p>У вас есть права администратора. Вы можете:</p>
                 <ul>
                     <li>Управлять пользователями</li>
-                    <li>Настраивать систему</li>
-                    <li>Просматривать статистику</li>
+                    <li>Добавить товар</li>
+                    <li>Управление товарами магазина</li>
                 </ul>
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-primary">Перейти в панель администратора</a>
+
             </div>
         @endif
+        <div class="card-body">
+
+            <div class="row mt-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-box-seam"></i> Товары
+                            </h5>
+                            <p class="card-text">Управление товарами магазина</p>
+                            <a href="{{ route('catalog.index') }}" class="btn btn-light">
+                                Перейти <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+                <h5>Быстрые действия:</h5>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i> Добавить товар
+                    </a>
+                    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+                        <i class="bi bi-list"></i> Список товаров
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

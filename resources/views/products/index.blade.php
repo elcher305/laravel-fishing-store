@@ -78,23 +78,13 @@
                                 <span class="checkbox-custom">✓</span>
                                 <span class="checkbox-label">Все бренды</span>
                             </label>
-                            @foreach($brands as $brand)
-                                @if($brand)
-                                    <label class="checkbox-option">
-                                        <input type="checkbox" name="brand[]" value="{{ $brand }}"
-                                            {{ in_array($brand, (array)request('brand', [])) ? 'checked' : '' }}>
-                                        <span class="checkbox-custom">✓</span>
-                                        <span class="checkbox-label">{{ $brand }}</span>
-                                    </label>
-                                @endif
-                            @endforeach
+
                         </div>
                     </div>
 
                     <!-- Кнопки фильтрации -->
                     <div class="filter-actions">
                         <button type="submit" form="filter-form" class="filter-btn apply-btn">показать</button>
-                        <a href="{{ route('products.index') }}" class="filter-btn reset-btn">сбросить</a>
                     </div>
                 </aside>
 
@@ -112,13 +102,6 @@
                         </div>
                     @endif
 
-                    <form id="filter-form" method="GET" action="{{ route('products.index') }}" class="hidden">
-                        <input type="hidden" name="price" id="filter-price">
-                        <input type="hidden" name="category[]" id="filter-category">
-                        <input type="hidden" name="brand[]" id="filter-brand">
-                        <input type="hidden" name="sort" value="{{ request('sort', 'created_at') }}">
-                        <input type="hidden" name="order" value="{{ request('order', 'desc') }}">
-                    </form>
 
                     <div class="products-grid">
                         @foreach($products as $product)
@@ -132,11 +115,6 @@
                                     <img src="{{ asset('img/no-image.png') }}" alt="Нет изображения" style="height: 200px; object-fit: contain;">
                                 @endif
 
-                                <h3 class="product-name">
-                                    <a href="{{ route('products.show', $product) }}" style="color: inherit; text-decoration: none;">
-                                        {{ $product->name }}
-                                    </a>
-                                </h3>
 
                                 <div class="product-sizes">
                                     <span class="size-option">{{ $product->brand ?: 'Без бренда' }}</span>

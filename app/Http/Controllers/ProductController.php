@@ -37,9 +37,8 @@ class ProductController extends Controller
 
         $products = $query->paginate(12);
         $categories = Product::distinct()->pluck('category');
-        $brands = Product::distinct()->pluck('brand');
 
-        return view('products.index', compact('products', 'categories', 'brands'));
+        return view('products.index', compact('products', 'categories'));
     }
 
     // Показать детали товара

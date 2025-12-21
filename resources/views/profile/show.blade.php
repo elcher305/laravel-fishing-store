@@ -64,18 +64,6 @@
                 Сменить пароль
             </a>
 
-            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                @csrf
-                <button type="submit" class="btn btn-secondary">
-                    Выйти
-                </button>
-            </form>
-
-            @if(Auth::user()->isAdmin())
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
-                    Панель администратора
-                </a>
-            @endif
         </div>
 
         <a href="{{ url('/dashboard') }}" class="back-link">
