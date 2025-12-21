@@ -20,7 +20,7 @@
         <img src="{{ asset('img/Phone-Rounded.svg') }}" alt="">
         <div class="user_menu">
             <a><b>+7(924) 613-43-45</b></a>
-            <a>Личный кабинет</a>
+            <a href="{{ route('login') }}">Личный кабинет</a>
         </div>
     </nav>
 
